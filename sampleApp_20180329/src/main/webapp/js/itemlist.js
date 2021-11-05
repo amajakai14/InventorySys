@@ -29,24 +29,15 @@ $(function() {
 		matHeadText.id = "ebase6_matHeadText";
 		matHead.appendChild(matHeadText);
 		$('#ebase6_matHeadText').html("食材リスト")
-		/*
-		var block = document.createElement("div");
-		field.appendChild(block);
-		block.id = "tableblock";
-		block.style.cssText = 'position:relative;display:block;overflow-auto;height:300px;';
-		*/
+
 		var table = document.createElement("table");
 		field.appendChild(table);
 		table.className = "tablesorter";
 		table.id = "dataTable";
 		table.style.cssText = "position:absolute;width:715px;"
 
-		//submit処理開始
 		//$.ajaxSetup({ async: false }); //同期
 		$.postJSON("DQube", { actionID: 'GoodsList' }, function(jres) {
-
-			//pamView.innerHTML="SQL [ " + jres.pams["sql"] + " ]";
-
 			//DOM型で要素をAppendしていく
 			var theadElem = document.createElement("thead");
 			var trElem = document.createElement("tr");
@@ -144,11 +135,7 @@ $(function() {
 				sortList: [[0, 0]],
 				headers: { 0: { sorter: false } }
 			});
-			var table5 = $('#dataTable').DataTable();
-			table5.ajax.reload();
 			$("#dataTable").trigger("update");
-
-
 			//$.ajaxSetup({ async: true }); //同期の解除
 			return false;
 		});
@@ -160,7 +147,7 @@ $(function() {
 		btn.setAttribute('type', "button");
 		btn.setAttribute('value', "新規登録");
 		btn.setAttribute('id', "new_sample");
-		btn.style.cssText = 'font-size:1em;padding: 5px;background-color: green;position:absolute;left:5px;top:480px;'
+		btn.style.cssText = 'font-size:1em;padding: 5px;background-color: green;position:absolute;left:5px;top:480px;cursor:pointer;'
 		$('#new_sample').off("click");
 		$('#new_sample').on("click", newgoods);
 
@@ -170,7 +157,7 @@ $(function() {
 		btn.setAttribute('type', "button");
 		btn.setAttribute('value', "食材修正");
 		btn.setAttribute('id', "matEdit");
-		btn.style.cssText = 'font-size:1em;padding: 5px;background-color: orange;position:absolute;left :95px;top:480px;'
+		btn.style.cssText = 'font-size:1em;padding: 5px;background-color: orange;position:absolute;left :95px;top:480px;cursor:pointer;'
 		$('#matEdit').off("click");
 		$('#matEdit').on("click", correctitem);
 
@@ -291,7 +278,7 @@ $(function() {
 		btn.setAttribute('type', "button");
 		btn.setAttribute('value', "登録確定");
 		btn.setAttribute('id', "button_sample");
-		btn.style.cssText = 'position:relative;top:100px;left:15px;background-color:#59B7EA';
+		btn.style.cssText = 'position:relative;top:100px;left:15px;background-color:#59B7EA;cursor:pointer;';
 		$('#button_sample').off("click");
 		$('#button_sample').on("click", insertdata);
 
@@ -304,7 +291,6 @@ $(function() {
 		$('.ebase6_returnItemlist').off("click");
 		$('.ebase6_returnItemlist').on("click", firstpageItem);
 
-		field.update();
 
 		$('#ebase6_shadow').css('display', 'block');
 
@@ -355,7 +341,7 @@ $(function() {
 		btnad.setAttribute('type', "button");
 		btnad.setAttribute('value', "追加/削除");
 		btnad.setAttribute('id', "button_ad");
-		btnad.style.cssText = 'position:relative;;background-color:	#C0C0C0';
+		btnad.style.cssText = 'position:relative;;background-color:	#C0C0C0;cursor:pointer;';
 		$('#button_ad').off("click");
 		$('#button_ad').on("click", correctitem);
 
@@ -476,7 +462,7 @@ $(function() {
 		btn.setAttribute('type', "button");
 		btn.setAttribute('value', "修正確定");
 		btn.setAttribute('id', "button_cc");
-		btn.style.cssText = 'position:relative;top:10px;background-color:#FF9B9B;';
+		btn.style.cssText = 'position:relative;top:10px;background-color:#FF9B9B;cursor:pointer;';
 		$('#button_cc').off("click");
 		$('#button_cc').on("click", updatedata);
 

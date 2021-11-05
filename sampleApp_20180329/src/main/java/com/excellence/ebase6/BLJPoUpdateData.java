@@ -116,7 +116,9 @@ public class BLJPoUpdateData extends BLJsonMap4DB implements IBisinessLogic {
 					$pstm.execute();
 
 					if($recode == null){
-						sql="select * from Material_M;";
+						sql="select p.PoNumber, m.MaterialName, m.Unit, m.UnitCost, m.ExpPeriod, m.Supplier, p.PoDate, p.DeliverDate, p.OrderQuan, p.PoRemark\n"
+								+ "from PurchaseOrder_T p\n"
+								+ "inner join  Material_M m on p.MaterialID = m.MaterialID;";
 						setSQL(sql);
 
 						if(executeSQL()) {

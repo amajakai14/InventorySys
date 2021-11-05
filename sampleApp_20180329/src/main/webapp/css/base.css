@@ -13,10 +13,10 @@ a:link { text-decoration: none; color: #000000; }
 a:visited { text-decoration: underline; color: #808000; }
 
 /* マウスカーソルを乗せたリンクの色をblueにする */
-a:hover { text-decoration: underline; color: #ff3385 ; }
+a:hover { text-decoration: none; color: #000000 ;font-weight:bold; }
 
 /* 選択リンクの色を濃い青にする */
-a:active { text-decoration: underline; color: #ff5500; }
+a:active { text-decoration: none; color: #0050ff;border-bottom-color:#0050ff; }
 
 /* メインメニュー */
 body{
@@ -311,6 +311,7 @@ table td th {
 	width : 100%;
 	height:100%;
 	font-size :20px;
+	cursor:pointer;
 
 
 }
@@ -322,6 +323,7 @@ table td th {
 	height:100%;
 	font-size :20px;
 	display:auto;
+	cursor:pointer;
 
 
 }
@@ -332,6 +334,7 @@ table td th {
 	width : 100%;
 	height:100%;
 	font-size :20px;
+	cursor:pointer;
 
 }
 #ebase6_NavInventory{
@@ -341,6 +344,7 @@ table td th {
 	width : 100%;
 	height:100%;
 	font-size :20px;
+	cursor:pointer;
 
 
 }
@@ -351,6 +355,7 @@ table td th {
 	width : 100%;
 	height:100%;
 	font-size :20px;
+	cursor:pointer;
 
 }
 #ebase6_NavIDRegister{
@@ -360,6 +365,7 @@ table td th {
 	width : 100%;
 	height:100%;
 	font-size :20px;
+	cursor:pointer;
 
 
 }
@@ -389,6 +395,7 @@ table td th {
 	font-size :10px;
 	opacity: 0.80;
 	display: none;
+	cursor:pointer;
 }
 /* 食材リストメニューに戻るボタン */
 .ebase6_returnItemlist{
@@ -398,6 +405,7 @@ table td th {
 	top:20px;
 	left:85%;	
 	border:1px solid black;
+	cursor:pointer;
 
 
 
