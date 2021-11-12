@@ -117,8 +117,8 @@ $(function(){
 	});
  		//食材リストボタンをクリック
 	$('#ebase6_NavgoodsView').click(function(){
-			menubarShow();
-			$('#datafield').css('display', 'block');
+		menubarShow();
+		$('#datafield').css('display', 'block');
 		
 		
 	});
@@ -126,10 +126,17 @@ $(function(){
 
 	 	//発注ボタンをクリック
 	$('#ebase6_NavPurchaseOrder').click(function(){
-			menubarShow();
-			$('#datafield').css('display', 'block');
-			$.orderexe();		
+		menubarShow();
+		$('#datafield').css('display', 'block');
+		$.orderexe();		
 	});
+	
+		//発注ボタンをクリック
+	$('#ebase6_NavgoodsInspt').click(function(){
+		menubarShow();
+		$('#datafield').css('display', 'block');
+		$.checkexe();
+	});	
 
 
 

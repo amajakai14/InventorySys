@@ -13,7 +13,12 @@ import com.excellence.dqube.base.IModel;
 
 			super.pageTitle = "BLJGoodsCheck";
 
-			super.defaultSQL = firstParam("check");;
+			super.defaultSQL = "Select m.MaterialName, m.Unit, m.Supplier, p.PoNumber, p.DeliverDate, m.ExpPeriod, p.OrderQuan\r\n"
+					+ "From PurchaseOrder_T p\r\n"
+					+ "LEFT JOIN Material_M m\r\n"
+					+ "On p.MaterialID = m.MaterialID\r\n"
+					+ "Where DeliverDate = CURDATE();";
+
 
 		}
 

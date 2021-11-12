@@ -52,7 +52,7 @@
 		<!-- レイアウトは良い感じに直して -->
 		<table id = "table_item">
 		<tr>
-		<td>メニュー</td>
+		<td style="background-color:#C0C0C0">メニュー</td>
 		<td style="background-color:#38F088"><a id="goodsView" href="javascript:void(0)">食材リスト </a></td>
 		<td style="background-color:#F5D98B"><a id="PurchaseOrder" href="javascript:void(0)">発注 </a></td>
 		<td style="background-color:#f5ff45 "><a id="goodsInspt" href="javascript:void(0)">検品 </a></td>

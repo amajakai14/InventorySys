@@ -29,12 +29,16 @@ $(function() {
 		matHeadText.id = "ebase6_PoHeadText";
 		matHead.appendChild(matHeadText);
 		$('#ebase6_PoHeadText').html("発注")
+		
+		var tablecontent = document.createElement("div");
+		tablecontent.id = "ebase6_tablecontentOrd";
+		field.appendChild(tablecontent);
 
 		var table = document.createElement("table");
-		field.appendChild(table);
+		tablecontent.appendChild(table);
 		table.className = "tablesorter";
 		table.id = "dataTable";
-		table.style.cssText = "position:absolute;width:1163px;"
+		table.style.cssText = "position:absolute;width:1125px;height:10px;"
 
 		$.postJSON("DQube", { actionID: 'PoList' }, function(jres) {
 
@@ -53,7 +57,8 @@ $(function() {
 				if (i == 0) {
 					var thElem = document.createElement("th");
 					trElem.appendChild(thElem);
-					thElem.style.cssText = 'padding:5px;width:35px;border:1px black solid;';
+					thElem.style.cssText = 'padding:5px;width:35px;border:1px black solid;display:none;';
+					thElem.setAttribute('id','checkboxcol');
 				} else if (i == 1) {
 					var thElem = document.createElement("th");
 					trElem.appendChild(thElem);
@@ -103,7 +108,7 @@ $(function() {
 			var tbodyElem = document.createElement("tbody");
 			table.appendChild(tbodyElem);
 			tbodyElem.setAttribute("id", "tbody_Po");
-			tbodyElem.style.cssText = "display:block;position:absolute;height:350px;width:1180px;overflow-y:auto;overflow-x:hidden;";
+			tbodyElem.style.cssText = "display:block;position:absolute;height:350px;width:1140px;overflow-y:auto;overflow-x:hidden;";
 
 			//データのヒットがない場合、空行を作成
 			if (jres.tblData.length == 0) {
@@ -131,7 +136,9 @@ $(function() {
 						check.setAttribute('id', rcheck);
 						check.setAttribute('class', "recheck")
 						check.setAttribute('checkd', "checked");
-						check.style.cssText = 'width:20px'
+						check.style.cssText = 'width:20px';
+						tdElem.style.cssText = 'display:none;';
+						tdElem.setAttribute('class','checkboxrow');
 						$(rcheck).off("check");
 					} else {
 						var col = jres.keys[i - 1];
@@ -142,7 +149,12 @@ $(function() {
 				}
 			}
 
-
+			//背景色の高さはデータ量による
+			var x = table.tBodies[0].rows.length;
+			var hadjust = 20+30*x;
+			table.style.cssText = "position:absolute;width:1125px;height:"+hadjust+"px;max-height:380px;";
+			
+			
 			$("#dataTable").tablesorter({
 				widgets: ['zebra'],
 				sortList: [[7, 1]],
@@ -157,21 +169,21 @@ $(function() {
 		});
 		//新規登録ボタン作成
 		var btns = document.createElement("input");
-		field.appendChild(btns);
+		tablecontent.appendChild(btns);
 		btns.setAttribute('type', "button");
 		btns.setAttribute('value', "新規発注");
 		btns.setAttribute('id', "NewPo");
-		btns.style.cssText = 'font-size:1em;padding: 5px;background-color: green;position:absolute;left:5px;top:480px;cursor:pointer;'
+		btns.style.cssText = 'font-size:1em;padding: 5px;background-color: green;position:absolute;left:5px;top:400px;cursor:pointer;'
 		$('#NewPo').off("click");
 		$('#NewPo').on("click", orderingWork);
 
 		//食材修正ボタン作成
 		var btnh = document.createElement("input");
-		field.appendChild(btnh);
+		tablecontent.appendChild(btnh);
 		btnh.setAttribute('type', "button");
 		btnh.setAttribute('value', "発注修正");
 		btnh.setAttribute('id', "PoEdit");
-		btnh.style.cssText = 'font-size:1em;padding: 5px;background-color: orange;position:absolute;left :95px;top:480px;cursor:pointer;'
+		btnh.style.cssText = 'font-size:1em;padding: 5px;background-color: orange;position:absolute;left :95px;top:400px;cursor:pointer;'
 		$('#PoEdit').off("click");
 		$('#PoEdit').on("click", insertdata);
 
@@ -215,7 +227,7 @@ $(function() {
 				btn.setAttribute('type', "button");
 				btn.setAttribute('value', "新規確定");
 				btn.setAttribute('id', "ebase6_popup_submit");
-				btn.style.cssText = "position:relative;top:100px;left:600px;width:80px;background-color:#59B7EA;cursor:pointer;"
+				btn.style.cssText = "position:relative;top:100px;left:600px;width:80px;background-color:#59B7EA;cursor:pointer;border-color:#a9f6f4;"
 				field.appendChild(btn);
 				$('#ebase6_popup_submit').off("click"); //実行ボタンの処理を初期化
 				$('#ebase6_popup_submit').on("click", insertPoData); //実行ボタンの処理変更
@@ -277,6 +289,7 @@ $(function() {
 		var table1 = document.createElement("table");
 		field.appendChild(table1);
 		table1.id = "Selectmat_table";
+		table1.class = "tablesorter";
 		table1.style.cssText = "position:relative;top:10px;left:10px;width:500px;border-collapse: collapse;"
 		$.postJSON("DQube", { actionID: 'GoodsSelect', item: item }, function(jres) {
 
@@ -367,7 +380,7 @@ $(function() {
 		var table2 = document.createElement("table");
 		field.appendChild(table2);
 		table2.id = "input_table";
-		table2.style.cssText = "position:absolute;top:131px;left:511px;width:400px;border-collapse: collapse;font-size:0.7em;"
+		table2.style.cssText = "position:absolute;top:131px;left:511px;width:400px;border-collapse: collapse;font-size:0.7em;background-color: #FFFFFF"
 
 		var theadElem2 = document.createElement("thead");  //DOM型で要素をAppendしていく
 		var trElem2 = document.createElement("tr");
@@ -433,6 +446,7 @@ $(function() {
 
 
 	function SelectMatitem() {
+		$('#buttonline').remove();
 		$('.ebase6_mainReturn').css('display', 'none');
 		$('#NewPo').css('display', 'none');
 		$('#PoEdit').css('display', 'none');
@@ -440,11 +454,19 @@ $(function() {
 		$('#ebase6_matHead').remove();
 		$('#ebase6_matSubText').remove();
 		var field = document.getElementById("datafield");
-
+		
+		var tablecontent = document.getElementById("ebase6_tablecontentOrd");
+		tablecontent.style.cssText = 'top:90px;';
+		
 		var reposition = document.getElementById("dataTable");
-		reposition.style.cssText = "position:absolute;width:1163px;top:90px;";
+		reposition.style.cssText = "position:absolute;width:1163px;";
 		var sizereduce = document.getElementById("tbody_Po");
 		sizereduce.style.cssText = "display:block;position:absolute;height:260px;width:1180px;overflow-y:auto;overflow-x:hidden;";
+		
+		//背景色の高さはデータ量による
+		var x = reposition.tBodies[0].rows.length;
+		var hadjust = 20+30*x;
+		reposition.style.cssText = "position:absolute;width:1163px;height:"+hadjust+"px;max-height:290px;overflow-y:auto;overflow-x:hidden;"
 
 		var matHead = document.createElement("div");
 		matHead.id = "ebase6_matHead";
@@ -464,8 +486,8 @@ $(function() {
 
 		var buttonline = document.createElement("div");
 		buttonline.id = "buttonline";
-		buttonline.style.cssText = 'margin:5px;position:absolute;top:50px;';
-		field.appendChild(buttonline);
+		buttonline.style.cssText = 'margin:5px;position:absolute;top:-40px;';
+		tablecontent.appendChild(buttonline);
 		var btnad = document.createElement("input");
 		buttonline.appendChild(btnad);
 		btnad.setAttribute('type', "button");
@@ -474,6 +496,13 @@ $(function() {
 		btnad.style.cssText = 'position:relative;;background-color:	#C0C0C0;cursor:pointer;';
 		$('#button_ad').off("click");
 		$('#button_ad').on("click", SelectMatitem);
+		
+		var checkboxcol = document.getElementById("checkboxcol");
+		checkboxcol.style.cssText = "padding:5px;width:35px;border:1px black solid;";
+		var all = document.getElementsByClassName('checkboxrow');
+		for (var i = 0; i < all.length; i++) {
+		 all[i].style.cssText = 'background-color:white;';
+		}
 		getCheckedData()
 	};
 
@@ -491,14 +520,17 @@ $(function() {
 	//品物データの修正処理
 	function getCheckedData() {
 		var field = document.getElementById("datafield");
+		var tablecontent = document.getElementById("ebase6_tablecontentOrd");
 		var table = document.getElementById("dataTable");
 		var tbodyRowCount = table.tBodies[0].rows.length;
+		
+		tablecontent.style.cssText = "position:absolute;left:20px;top:90px;"
 
 		$('#ebase6_listCreateTable').remove();
 		var listCreateTable = document.createElement("div");
 		listCreateTable.id = "ebase6_listCreateTable";
 		listCreateTable.style.cssText = 'top:300px;width:1163px;';
-		field.appendChild(listCreateTable);
+		tablecontent.appendChild(listCreateTable);
 
 		var view1 = document.createElement("div");
 		listCreateTable.appendChild(view1);
@@ -714,10 +746,12 @@ $(function() {
 					var delidate = document.getElementById(input_2).value;
 					var poremark = document.getElementById(input_3).value;
 					var id = document.getElementById(input_7).innerHTML;
-
+					
+					$('#ebase6_tablecontentOrd').remove();
 					var field = document.getElementById("datafield");
-
-
+					var tablecontent = document.createElement("div");
+					tablecontent.id = "ebase6_tablecontentOrd";
+					field.appendChild(tablecontent);
 
 					//$.ajaxSetup({ async: false });	
 					$.postJSON("DQube", { actionID: 'PoUpdateData', order: order, delidate: delidate, poremark: poremark, id: id }, function(jres) {
@@ -725,10 +759,10 @@ $(function() {
 							//pamView.innerHTML="SQL [ " + jres.pams["sql"] + " ]";
 							$('#dataTable').remove();
 							var table = document.createElement("table");
-							field.appendChild(table);
+							tablecontent.appendChild(table);
 							table.className = "tablesorter";
 							table.id = "dataTable";
-							table.style.cssText = "position:absolute;width:1163px;"
+							table.style.cssText = "position:absolute;width:1125px;"
 
 							//DOM型で要素をAppendしていく
 							var theadElem = document.createElement("thead");
@@ -743,7 +777,8 @@ $(function() {
 								if (i == 0) {
 									var thElem = document.createElement("th");
 									trElem.appendChild(thElem);
-									thElem.style.cssText = 'padding:5px;width:35px;border:1px black solid;';
+									thElem.style.cssText = 'padding:5px;width:35px;border:1px black solid;display:none;';
+									thElem.setAttribute('id','checkboxcol');
 								} else if (i == 1) {
 									var thElem = document.createElement("th");
 									trElem.appendChild(thElem);
@@ -793,7 +828,7 @@ $(function() {
 							var tbodyElem = document.createElement("tbody");
 							table.appendChild(tbodyElem);
 							tbodyElem.setAttribute("id", "tbody_Po");
-							tbodyElem.style.cssText = "display:block;position:absolute;height:350px;width:1180px;overflow-y:auto;overflow-x:hidden;"
+							tbodyElem.style.cssText = "display:block;position:absolute;height:350px;width:1140px;overflow-y:auto;overflow-x:hidden;"
 
 							//データのヒットがない場合、空行を作成
 							if (jres.tblData.length == 0) {
@@ -822,6 +857,8 @@ $(function() {
 										check.setAttribute('class', "recheck")
 										check.setAttribute('checkd', "checked");
 										check.style.cssText = 'width:20px'
+										tdElem.style.cssText = 'display:none;';
+										tdElem.setAttribute('class','checkboxrow');
 										$(rcheck).off("check");
 									} else {
 										var col = jres.keys[i - 1];
@@ -831,6 +868,10 @@ $(function() {
 									}
 								}
 							}
+							//背景色の高さはデータ量による
+							var x = table.tBodies[0].rows.length;
+							var hadjust = 20+30*x;
+							table.style.cssText = "position:absolute;width:1125px;height:"+hadjust+"px;max-height:380px;";
 
 
 							$("#dataTable").tablesorter({
@@ -839,40 +880,41 @@ $(function() {
 								headers: { 0: { sorter: false } }
 
 							});
+							//新規登録ボタン作成
+							var btns = document.createElement("input");
+							tablecontent.appendChild(btns);
+							btns.setAttribute('type', "button");
+							btns.setAttribute('value', "新規発注");
+							btns.setAttribute('id', "NewPo");
+							btns.style.cssText = 'font-size:1em;padding: 5px;background-color: green;position:absolute;left:5px;top:400px;cursor:pointer;'
+							$('#NewPo').off("click");
+							$('#NewPo').on("click", orderingWork);
+					
+							//食材修正ボタン作成
+							var btnh = document.createElement("input");
+							tablecontent.appendChild(btnh);
+							btnh.setAttribute('type', "button");
+							btnh.setAttribute('value', "発注修正");
+							btnh.setAttribute('id', "PoEdit");
+							btnh.style.cssText = 'font-size:1em;padding: 5px;background-color: orange;position:absolute;left :95px;top:400px;cursor:pointer;'
+							$('#PoEdit').off("click");
+							$('#PoEdit').on("click", insertdata);
+							
+							$("#dataTable").trigger("update");
 							tableCount += 1;
-							$("#dataTable1").trigger("update");
 							return false;
-						}
+						}					
 					});
-				}
+					
+				};
 			}
 
 
 
 		}
+		
 		matHead = document.getElementById('ebase6_matHead');
 		matHead.style.cssText = "left:calc(50% - 100px);"
-
-		//新規登録ボタン作成
-		/*		var btns = document.createElement("input");
-				field.appendChild(btns);
-				btns.setAttribute('type', "button");
-				btns.setAttribute('value', "新規発注");
-				btns.setAttribute('id', "NewPo");
-				btns.style.cssText = 'font-size:1em;padding: 5px;background-color: green;position:absolute;left:5px;top:480px;cursor:pointer;'
-				$('#NewPo').off("click");
-				$('#NewPo').on("click", orderingWork);
-		
-				//食材修正ボタン作成
-				var btnh = document.createElement("input");
-				field.appendChild(btnh);
-				btnh.setAttribute('type', "button");
-				btnh.setAttribute('value', "発注修正");
-				btnh.setAttribute('id', "PoEdit");
-				btnh.style.cssText = 'font-size:1em;padding: 5px;background-color: orange;position:absolute;left :95px;top:480px;cursor:pointer;'
-				$('#PoEdit').off("click");
-				$('#PoEdit').on("click", insertdata);
-		*/
 
 		$('.ebase6_mainReturn').css('display', 'block');
 		$('.ebase6_returnItemlist').css('display', 'none');
@@ -886,5 +928,5 @@ $(function() {
 		$('#ebase6_listCreateTable').remove();
 		return false;
 
-	};
+	}
 });

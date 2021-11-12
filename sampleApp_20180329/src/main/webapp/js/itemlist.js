@@ -29,12 +29,18 @@ $(function() {
 		matHeadText.id = "ebase6_matHeadText";
 		matHead.appendChild(matHeadText);
 		$('#ebase6_matHeadText').html("食材リスト")
-
+		
+		var tablecontent = document.createElement("div");
+		tablecontent.id = "ebase6_tablecontent";
+		field.appendChild(tablecontent);
+		tablecontent.style.cssText = "position:absolute;left:calc(50% - 338px);"
+		
+		
 		var table = document.createElement("table");
-		field.appendChild(table);
+		tablecontent.appendChild(table);
 		table.className = "tablesorter";
 		table.id = "dataTable";
-		table.style.cssText = "position:absolute;width:715px;"
+		table.style.cssText = "position:absolute;width:676px;"
 
 		//$.ajaxSetup({ async: false }); //同期
 		$.postJSON("DQube", { actionID: 'GoodsList' }, function(jres) {
@@ -51,7 +57,8 @@ $(function() {
 				if (i == 0) {
 					var thElem = document.createElement("th");
 					trElem.appendChild(thElem);
-					thElem.style.cssText = "padding:5px;width:35px;border:1px black solid;"
+					thElem.style.cssText = "padding:5px;width:35px;border:1px black solid;display:none;"
+					thElem.setAttribute('id','checkboxcol');
 				} else if (i == 1) {
 					var thElem = document.createElement("th");
 					trElem.appendChild(thElem);
@@ -88,7 +95,7 @@ $(function() {
 			var tbodyElem = document.createElement("tbody");
 			table.appendChild(tbodyElem);
 			tbodyElem.setAttribute("id", "tbody_mat")
-			tbodyElem.style.cssText = "display:block;position:absolute;height:300px;overflow-y:auto;overflow-x:hidden;"
+			tbodyElem.style.cssText = "display:block;position:absolute;height:330px;overflow-y:auto;overflow-x:hidden;"
 
 			//データのヒットがない場合、空行を作成
 			if (jres.tblData.length == 0) {
@@ -116,7 +123,9 @@ $(function() {
 						check.setAttribute('id', rcheck);
 						check.setAttribute('class', "recheck")
 						check.setAttribute('checkd', "checked");
-						check.style.cssText = 'width:20px'
+						check.style.cssText = 'width:20px';
+						tdElem.style.cssText = 'display:none;';
+						tdElem.setAttribute('class','checkboxrow');
 						$(rcheck).off("check");
 					} else {
 						var col = jres.keys[i - 1];
@@ -128,36 +137,42 @@ $(function() {
 					}
 				}
 			}
-
-
 			$("#dataTable").tablesorter({
 				widgets: ['zebra'],
-				sortList: [[0, 0]],
+				sortList: [[1, 0]],
 				headers: { 0: { sorter: false } }
+
 			});
+			
+			//背景色の高さはデータ量による
+			var x = table.tBodies[0].rows.length;
+			var hadjust = 20+30*x;
+			table.style.cssText = "position:absolute;width:676px;height:"+hadjust+"px;max-height:360px;"
+
 			$("#dataTable").trigger("update");
 			//$.ajaxSetup({ async: true }); //同期の解除
 			return false;
 		});
 
 
+
 		//新規登録ボタン作成
 		var btn = document.createElement("input");
-		field.appendChild(btn);
+		tablecontent.appendChild(btn);
 		btn.setAttribute('type', "button");
 		btn.setAttribute('value', "新規登録");
 		btn.setAttribute('id', "new_sample");
-		btn.style.cssText = 'font-size:1em;padding: 5px;background-color: green;position:absolute;left:5px;top:480px;cursor:pointer;'
+		btn.style.cssText = 'font-size:1em;padding: 5px;background-color: green;position:absolute;left:5px;top:380px;cursor:pointer;'
 		$('#new_sample').off("click");
 		$('#new_sample').on("click", newgoods);
 
 		//食材修正ボタン作成
 		var btn = document.createElement("input");
-		field.appendChild(btn);
+		tablecontent.appendChild(btn);
 		btn.setAttribute('type', "button");
 		btn.setAttribute('value', "食材修正");
 		btn.setAttribute('id', "matEdit");
-		btn.style.cssText = 'font-size:1em;padding: 5px;background-color: orange;position:absolute;left :95px;top:480px;cursor:pointer;'
+		btn.style.cssText = 'font-size:1em;padding: 5px;background-color: orange;position:absolute;left:95px;top:380px;cursor:pointer;'
 		$('#matEdit').off("click");
 		$('#matEdit').on("click", correctitem);
 
@@ -300,8 +315,8 @@ $(function() {
 
 	/* 新規登録ボタン押下処理 */
 	function correctitem() {
-		$('#matEdit').remove();
-		$('#new_sample').remove();
+		$('#matEdit').hide();
+		$('#new_sample').hide();
 		$('.ebase6_mainReturn').css('display', 'none');
 		$('.ebase6_returnItemlist').show();
 		$('#button_ad').remove();
@@ -309,11 +324,19 @@ $(function() {
 		$('#ebase6_controlmenu').css('display', 'none');
 		$('#ebase6_matHead').remove();
 		var field = document.getElementById("datafield");
+		
+		var tablecontent = document.getElementById("ebase6_tablecontent");
+		tablecontent.style.cssText = "position:absolute;top:90px;left:calc(50% - 365px);";
 
 		var reposition = document.getElementById("dataTable");
-		reposition.style.cssText = "position:absolute;top:90px;width: 715px;"
+		reposition.style.cssText = "position:absolute;width:715px;";
 		var sizereduce = document.getElementById("tbody_mat");
-		sizereduce.style.cssText = "display:block;position:absolute;height:165px;overflow-y:auto;overflow-x:hidden;"
+		sizereduce.style.cssText = "display:block;position:absolute;height:200px;overflow-y:auto;overflow-x:hidden;";
+		
+		//背景色の高さはデータ量による
+		var x = reposition.tBodies[0].rows.length;
+		var hadjust = 20+30*x;
+		reposition.style.cssText = "position:absolute;width:715px;height:"+hadjust+"px;max-height:230px;";
 
 		var matHead = document.createElement("div");
 		matHead.id = "ebase6_matHead";
@@ -333,8 +356,8 @@ $(function() {
 
 		var buttonline = document.createElement("div");
 		buttonline.id = "buttonline";
-		buttonline.style.cssText = 'margin:5px;position:absolute;top:50px;';
-		field.appendChild(buttonline);
+		buttonline.style.cssText = 'margin:5px;position:absolute;top:-40px;';
+		tablecontent.appendChild(buttonline);
 
 		var btnad = document.createElement("input");
 		buttonline.appendChild(btnad);
@@ -352,7 +375,7 @@ $(function() {
 		$('#ebase6_listCreateTable').remove();
 		var listCreateTable = document.createElement("div");
 		listCreateTable.id = "ebase6_listCreateTable";
-		listCreateTable.style.cssText = 'top:200px;';
+		listCreateTable.style.cssText = 'top:250px;';
 		field.appendChild(listCreateTable);
 
 		var view1 = document.createElement("div");
@@ -457,6 +480,13 @@ $(function() {
 			}
 
 		}
+		//チェックボックスを表示する
+		var checkboxcol = document.getElementById("checkboxcol");
+		checkboxcol.style.cssText = "padding:5px;width:35px;border:1px black solid;";
+		var all = document.getElementsByClassName('checkboxrow');
+		for (var i = 0; i < all.length; i++) {
+		 all[i].style.cssText = 'background-color:white;';
+		}	
 		var btn = document.createElement("input");
 		listCreateTable.appendChild(btn);
 		btn.setAttribute('type', "button");
@@ -503,7 +533,7 @@ $(function() {
 		field.appendChild(table);
 		table.className = "tablesorter";
 		table.id = "dataTable";
-		table.style.cssText = 'position:absolute;top:80pxwidth:880px;margin:5px 5px 5px 5px;';
+		table.style.cssText = 'position:absolute;top:80px;width:880px;margin:5px 5px 5px 5px;';
 		if (name == '') {
 			alert("食材名を入力してください");
 		}/*else if(unit == ''){
@@ -532,10 +562,11 @@ $(function() {
 	//品物データの修正処理
 	function updatedata() {
 		//var sql = prompt("input sql","");
+		var tableCount = 0;
+		var table = document.getElementById("dataTable");
+		var tbodyRowCount = table.tBodies[0].rows.length;
 
-
-
-		for (j = 0; ; j++) {
+		for (j = 0; j < tbodyRowCount; j++) {
 			var rcheck = "chbox" + j;
 			if (document.getElementById(rcheck) != null) {
 				var countCheck = 0;
@@ -549,13 +580,11 @@ $(function() {
 					alert("修正欄と選択欄が一致していないため、ご確認ください");
 					return false;
 				}
-			} else {
-				break;
 			}
 		}
 
 
-		for (j = 0; ; j++) {
+		for (j = 0; j < tbodyRowCount; j++) {
 			var rcheck = "chbox" + j;
 			if (document.getElementById(rcheck) != null) {
 				var x = document.getElementById(rcheck).checked;
@@ -575,20 +604,142 @@ $(function() {
 					var supp = document.getElementById(input_5).value;
 					var caution = document.getElementById(input_6).value;
 					var id = document.getElementById(input_7).innerHTML;
+					
+					var tablecontent = document.getElementById("ebase6_tablecontent");
+					tablecontent.style.cssText = "position:absolute;top:90px;left:calc(50% - 338px);"
+					
 
-					$.postJSON("DQube", { actionID: 'UpdateData', name: name, unit: unit, cost: cost, expperiod: expperiod, supp: supp, caution: caution, id: id }, function() {  //submit処理開始
+					$.postJSON("DQube", { actionID: 'UpdateData', name: name, unit: unit, cost: cost, expperiod: expperiod, supp: supp, caution: caution, id: id }, function(jres) {
+						if(tableCount == 0){
+							//DOM型で要素をAppendしていく
+							$('#dataTable').remove();
+							var table = document.createElement("table");
+							tablecontent.appendChild(table);
+							table.className = "tablesorter";
+							table.id = "dataTable";
+							table.style.cssText = "position:absolute;width:676px;"
+							
+							var theadElem = document.createElement("thead");
+							var trElem = document.createElement("tr");
+							table.appendChild(theadElem);
+							theadElem.appendChild(trElem);
+				
+				
+							for (i = 0; i < jres.keys.length + 1; i++) {
+								//テーブルにカラム名を表示
+								var col = jres.keys[i];
+								if (i == 0) {
+									var thElem = document.createElement("th");
+									trElem.appendChild(thElem);
+									thElem.style.cssText = "padding:5px;width:35px;border:1px black solid;display:none;"
+									thElem.setAttribute('id','checkboxcol');
+								} else if (i == 1) {
+									var thElem = document.createElement("th");
+									trElem.appendChild(thElem);
+									thElem.innerHTML = "食材ID";
+									thElem.setAttribute("class","Idcol");
+								} else if (i == 2) {
+									var thElem = document.createElement("th");
+									trElem.appendChild(thElem);
+									thElem.innerHTML = "食材名";
+								} else if (i == 3) {
+									var thElem = document.createElement("th");
+									trElem.appendChild(thElem);
+									thElem.innerHTML = "単位";
+								} else if (i == 4) {
+									var thElem = document.createElement("th");
+									trElem.appendChild(thElem);
+									thElem.innerHTML = "単価";
+								} else if (i == 5) {
+									var thElem = document.createElement("th");
+									trElem.appendChild(thElem);
+									thElem.innerHTML = "消費期間";
+								} else if (i == 6) {
+									var thElem = document.createElement("th");
+									trElem.appendChild(thElem);
+									thElem.innerHTML = "仕入れ店";
+								} else if (i == 7) {
+									var thElem = document.createElement("th");
+									trElem.appendChild(thElem);
+									thElem.innerHTML = "食材備考";
+								}
+							}
+				
+							//データ行を作成
+							var tbodyElem = document.createElement("tbody");
+							table.appendChild(tbodyElem);
+							tbodyElem.setAttribute("id", "tbody_mat")
+							tbodyElem.style.cssText = "display:block;position:absolute;height:330px;overflow-y:auto;overflow-x:hidden;"
+				
+							//データのヒットがない場合、空行を作成
+							if (jres.tblData.length == 0) {
+								var trElem = document.createElement("tr");
+								tbodyElem.appendChild(trElem);
+								for (i = 0; i < jres.keys.length; i++) {
+									var tdElem = document.createElement("td");
+									trElem.appendChild(tdElem);
+									tdElem.style.background = "FC2604";
+								}
+							}
+				
+							for (j = 0; j < jres.tblData.length; j++) { //データの書きだし
+								var trElem = document.createElement("tr");
+								tbodyElem.appendChild(trElem);
+								for (i = 0; i < jres.keys.length + 1; i++) {
+									var tdElem = document.createElement("td");
+									trElem.appendChild(tdElem);
+									tdElem.style.background = "#fff";
+									if (i == 0) {
+										var check = document.createElement("input");
+										var rcheck = "chbox" + j;
+										tdElem.appendChild(check);
+										check.setAttribute('type', "checkbox");
+										check.setAttribute('id', rcheck);
+										check.setAttribute('class', "recheck")
+										check.setAttribute('checkd', "checked");
+										check.style.cssText = 'width:20px'
+										tdElem.style.cssText = 'display:none;';
+										tdElem.setAttribute('class','checkboxrow');
+										$(rcheck).off("check");
+									} else {
+										var col = jres.keys[i - 1];
+										tdElem.innerHTML = jres.tblData[j][col];
+										tdElem.setAttribute('id', j * 10 + i);
+											if(i == 1){
+												tdElem.setAttribute("class","Idcol");
+											}
+									}
+								}
+							}
+						//背景色の高さはデータ量による
+						var x = table.tBodies[0].rows.length;
+						var hadjust = 20+30*x;
+						table.style.cssText = "position:absolute;width:676px;height:"+hadjust+"px;max-height:360px;";
+						}
+						
+						tableCount += 1;
 						return false;
 					});
-				} else {
-
+					
+				
 				}
-			} else {
-				break;
 			}
 
 		}
+		matHead = document.getElementById('ebase6_matHead');
+		matHead.style.cssText = "left:calc(50% - 100px);"
+		
+		$('.ebase6_mainReturn').css('display', 'block');
+		$('.ebase6_returnItemlist').css('display', 'none');
+		$('#button_cc').css('display', 'none');
+		$('#matEdit').show();
+		$('#new_sample').show();
+		$('#button_ad').remove();
+		$('.ebase6_returnItemlist').css('display', 'none');
 		$("#dataTable").trigger("update");
-		firstpageItem();
+		$('#ebase6_matSubText').remove();
+		$('#ebase6_listCreateTable').remove();
+		
 		return false;
 	}
 	//}	

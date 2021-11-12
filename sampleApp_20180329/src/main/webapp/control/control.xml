@@ -88,6 +88,36 @@
 		<loglevel>TRACE</loglevel>
 		<logonignore>true</logonignore>
 	</QUBE>
+	<QUBE id="InspectPoID">
+		<logic>com.excellence.ebase6.BLJInspectPoID</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>
+	<QUBE id="InspectSelect">
+		<logic>com.excellence.ebase6.BLJInspectSelect</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>
+	<QUBE id="InspectUpdateData">
+		<logic>com.excellence.ebase6.BLJInspectUpdateData</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>
+	<QUBE id="CheckToday">
+		<logic>com.excellence.ebase6.BLJCheckToday</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>
+	<QUBE id="CheckDeliverTodayYN">
+		<logic>com.excellence.ebase6.BLJCheckDeliverTodayYN</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>
 		<QUBE id="GoodsList">
 		<logic>com.excellence.ebase6.BLJGoodsList</logic>
 		<urls>JSON</urls>

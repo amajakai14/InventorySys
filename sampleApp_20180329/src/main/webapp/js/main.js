@@ -38,7 +38,7 @@ $(function(){
 	});
 
 	//品物検品画面出力処理キック
-	$('a[id=goodsCheck]').click(function(){
+	$('a[id=goodsInspt]').click(function(){
 		$.checkexe();
 	});
 

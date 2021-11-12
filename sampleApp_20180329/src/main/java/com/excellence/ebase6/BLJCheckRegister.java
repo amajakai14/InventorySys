@@ -33,7 +33,7 @@ public class BLJCheckRegister extends BLJsonMap4DB implements IBisinessLogic {
 
 		super.pageTitle = "BLJCheckRegister";
 
-		super.defaultSQL = "INSERT INTO SUPPLY_HISTORY (id, SUPPLY, SUPPLY_DAY) VALUES (?, ?, NOW())";
+		super.defaultSQL = "INSERT INTO Inspect_Test (PoNumber, InspectCount, BadCount, InspectShort, ExpDate, InspectDate, InspectRemark) VALUES (?, ?, ?, ?, ?,CURDATE(), ?)";
 
 	}
 
@@ -42,7 +42,11 @@ public class BLJCheckRegister extends BLJsonMap4DB implements IBisinessLogic {
 		boolean rtnFlg = true; //処理結果
 
 		String id = firstParam("id");
-		String supply = firstParam("supply");
+		String realcount = firstParam("realcount");
+		String badcount = firstParam("badcount");
+		String shortcount = firstParam("shortcount");
+		String expdate = firstParam("expdate");
+		String checkremark = firstParam("checkremark");
 		//格納モデルをインスタンス化
 		outModel = new PModel();
 
@@ -104,12 +108,19 @@ public class BLJCheckRegister extends BLJsonMap4DB implements IBisinessLogic {
 		try{
 
 			$pstm.setInt(1,Integer.parseInt(id));
-			$pstm.setInt(2, Integer.parseInt(supply));
+			$pstm.setInt(2,Integer.parseInt(realcount));
+			$pstm.setInt(3,Integer.parseInt(badcount));
+			$pstm.setInt(4,Integer.parseInt(shortcount));
+			$pstm.setDate(5,java.sql.Date.valueOf(expdate));
+			$pstm.setString(6,checkremark);
 
 			$pstm.execute();
 
 			if($recode == null){
-				sql="select * from SUPPLY_HISTORY;";
+				sql="Select m.MaterialName, m.Unit, m.Supplier, p.OrderQuan, InspectCount, BadCount, InspectShort, ExpDate,InspectDate, InspectRemark\r\n"
+						+ "From Inspect_Test i\r\n"
+						+ "Inner Join PurchaseOrder_T p on i.PoNumber = p.PoNumber\r\n"
+						+ "Inner Join Material_M m on p.MaterialID = m.MaterialID;";
 				setSQL(sql);
 
 				if(executeSQL()) {
