@@ -71,23 +71,7 @@ $(function(){
 
 	});
 	
-	//日付＆時刻を表示
-	$(document).ready(function(){
-	var today = new Date();
-	var hour = today.getHours();
-	if(hour <10){
-		hour = '0'+ hour
-	}
-	var minute = today.getMinutes();
-	if(minute <10){
-		minute = '0' + minute
-	}
-	var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-	var time = hour + ":" + minute;
-	var dateTime = date+' '+time;
-  	document.getElementById("ebase_time_boxlogin").innerHTML = 'time : ' + dateTime;
-	document.getElementById("ebase_time_boxlogin").style.textAlign = 'right';
-	});
+	
 	
 		//ALL menu close
 	function menuClose() {
@@ -131,11 +115,17 @@ $(function(){
 		$.orderexe();		
 	});
 	
-		//発注ボタンをクリック
+		//検品ボタンをクリック
 	$('#ebase6_NavgoodsInspt').click(function(){
 		menubarShow();
 		$('#datafield').css('display', 'block');
 		$.checkexe();
+	});	
+		//棚卸ボタンをクリック
+	$('#ebase6_NavStockCount').click(function(){
+		menubarShow();
+		$('#datafield').css('display', 'block');
+		$.stockcount();
 	});	
 
 

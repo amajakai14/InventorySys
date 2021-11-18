@@ -49,9 +49,8 @@ $(function(){
 	});
 
 	//棚卸作業画面出力処理キック
-	$('a[id=Inventories]').click(function(){
-		$('#datafield').empty();
-		document.getElementById("ebase6_submenu").innerHTML="棚卸作業";
+	$('a[id=StockCount]').click(function(){
+		$.stockcount();
 	});
 
 	//履歴表示画面出力処理キック

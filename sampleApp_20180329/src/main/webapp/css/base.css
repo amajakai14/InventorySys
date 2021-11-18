@@ -376,10 +376,24 @@ table td th {
 	border: 1px solid black;
 	
 }
-
-
-
-
+/* Table style Inventory*/
+#dataTableInv > thead > tr > th{
+	min-width:80px;
+	width:80px;
+	padding:4px;
+	border: 1px solid black;
+	box-sizing: border-box;
+	
+}
+/* Table style InventoryManage*/
+#dataTableMng > thead > tr > th{
+	min-width:100px;
+	width:100px;
+	padding:4px;
+	border: 1px solid black;
+	box-sizing: border-box;
+	
+}
 /* メインに戻るボタン */
 .ebase6_mainReturn{
 	background-color : #f1b51d;
@@ -437,6 +451,15 @@ table td th {
 	padding : 3px;
 	box-sizing: border-box;
 }
+#ebase6_matSubText{
+	position:relative;
+	width:130px;
+	background-color: #59B7EA;
+	text-align : center;
+	border : 1px solid black;
+	padding : 3px;
+	box-sizing: border-box;
+}
 /* 発注の見出し */
 #ebase6_PoHeadText{
 	position:relative;
@@ -452,6 +475,16 @@ table td th {
 	position:relative;
 	width:200px;
 	background-color: #f5ff45;
+	text-align : center;
+	border : 1px solid black;
+	padding : 3px;
+	box-sizing: border-box;
+}
+/* 棚卸の見出し */
+#ebase6_StockHeadText{
+	position:relative;
+	width:200px;
+	background-color: #f1b51d;
 	text-align : center;
 	border : 1px solid black;
 	padding : 3px;
@@ -502,6 +535,11 @@ table td {
    border: 1px solid #000000; /* 表内側の線：1px,実線,緑色 */
    padding: 3px;            /* セル内側の余白：3ピクセル */
 }
+/*棚卸画面*/
+#tbody_stock > tr > td{
+	width:80px;
+	box-sizing: border-box;
+}
 #ebase6_listCreateTable{
 	position:relative;
 	width:calc(100% - 10px);
@@ -531,10 +569,21 @@ table td {
 }
 
 @media only screen and (max-width: 1200px) {
-  #ebase6_tablecontent, #ebase6_tablecontentOrd {position:absolute;left:30px;}  
+  #ebase6_tablecontent, #ebase6_tablecontentOrd {position:absolute;left:30px;} 
+  #ebase6_tablecontentInv {position:absolute;top:250px;left:30px;}  
+  #ebase6_tablecontentmng{position:absolute;left:calc(50% - 300px);top:135px}
+  #Daysalebox{position:absolute;top:80px;left:75%;width:150px;}
 }
 
 @media only screen and (min-width: 1201px) {
   #ebase6_tablecontent {position:absolute;left:calc(50% - 563px);}
   #ebase6_tablecontentOrd {position:absolute;left:calc(50% - 563px);}
+  #ebase6_tablecontentInv {position:absolute;top:250px;left:calc(50% - 499px);}
+  #ebase6_tablecontentmng{position:absolute;left:calc(50% - 300px);top:135px} 
+  #Daysalebox{position:absolute;top:80px;left:75%;width:150px;}
+}
+
+@media only screen and (max-width: 726px){
+	#Daysalebox{position:absolute;top:80px;left:500px;width:150px;}
+	#ebase6_tablecontentmng{position:absolute;left:30px;top:135px}  
 }

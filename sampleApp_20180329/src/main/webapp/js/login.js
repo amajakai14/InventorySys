@@ -44,9 +44,9 @@ $(function(){
 				//initialhead.setAttribute('value',"在庫管理システム");
 				//date time
 				var initialdate = document.createElement("div");
-				initialdate.id = `ebase_time_boxlogin`;
+				initialdate.id = 'ebase_time_boxlogin';
 				initialView.appendChild(initialdate);
-				$('#ebase_time_boxlogin').html("date")
+				$('#ebase_time_boxlogin').html(Realtime);
 
 
 				//文言
@@ -237,5 +237,26 @@ $(function(){
 
 	//ログイン用のポップアップをロード時に呼び出す
 	//$.loginpopup();
+	
+	//日付＆時刻を表示
+	function Realtime(){
+			setInterval(doDate, 1000);
+	} 
+	function doDate(){
+	var today = new Date();
+	var hour = today.getHours();
+	if(hour <10){
+		hour = '0'+ hour
+	}
+	var minute = today.getMinutes();
+	if(minute <10){
+		minute = '0' + minute
+	}
+	var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+	var time = hour + ":" + minute;
+	var dateTime = date+' '+time;
+  	document.getElementById("ebase_time_boxlogin").innerHTML = 'time : ' + dateTime;
+	document.getElementById("ebase_time_boxlogin").style.textAlign = 'right';
+	}
 
 });

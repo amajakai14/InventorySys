@@ -52,6 +52,12 @@
 		<loglevel>TRACE</loglevel>
 		<logonignore>true</logonignore>
 	</QUBE>
+	<QUBE id="CountingStock">
+		<logic>com.excellence.ebase6.BLJCountingStock</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>	
 	<QUBE id="InsertData">
 		<logic>com.excellence.ebase6.BLJInsertData</logic>
 		<urls>JSON</urls>
@@ -112,6 +118,12 @@
 		<loglevel>TRACE</loglevel>
 		<logonignore>true</logonignore>
 	</QUBE>
+	<QUBE id="InspectDoneToday">
+		<logic>com.excellence.ebase6.BLJInspectDoneToday</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>	
 	<QUBE id="CheckDeliverTodayYN">
 		<logic>com.excellence.ebase6.BLJCheckDeliverTodayYN</logic>
 		<urls>JSON</urls>
@@ -156,6 +168,12 @@
 	</QUBE>
 	<QUBE id="OrderNumber">
 		<logic>com.excellence.ebase6.BLJOrderNumber</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>
+	<QUBE id="FourWeeksGoodsSales">
+		<logic>com.excellence.ebase6.BLJFourWeeksGoodsSales</logic>
 		<urls>JSON</urls>
 		<loglevel>TRACE</loglevel>
 		<logonignore>true</logonignore>

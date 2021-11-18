@@ -2,9 +2,6 @@
  * javascript for itemlist
  */
 
-/**
-* 品物一覧画面の処理はここに書く
-*/
 $(function() {
 
 	//品物一覧表示
@@ -131,9 +128,9 @@ $(function() {
 						var col = jres.keys[i - 1];
 						tdElem.innerHTML = jres.tblData[j][col];
 						tdElem.setAttribute('id', j * 10 + i);
-							if(i == 1){
-								tdElem.setAttribute("class","Idcol");
-							}
+						if(i == 1){
+							tdElem.setAttribute("class","Idcol");
+						}
 					}
 				}
 			}
@@ -366,120 +363,11 @@ $(function() {
 		btnad.setAttribute('id', "button_ad");
 		btnad.style.cssText = 'position:relative;;background-color:	#C0C0C0;cursor:pointer;';
 		$('#button_ad').off("click");
-		$('#button_ad').on("click", correctitem);
+		$('#button_ad').on("click", addcorrectdata);
 
 
 
-
-
-		$('#ebase6_listCreateTable').remove();
-		var listCreateTable = document.createElement("div");
-		listCreateTable.id = "ebase6_listCreateTable";
-		listCreateTable.style.cssText = 'top:250px;';
-		field.appendChild(listCreateTable);
-
-		var view1 = document.createElement("div");
-		listCreateTable.appendChild(view1);
-		view1.innerHTML = "食材名";
-		view1.style.cssText = 'position:relative;border:solid 1px;min-width:100px;width:15%;background-color:grey;padding:5px;text-align:center;box-sizing: border-box;';
-		view1.id = "view1_sample";
-
-		var view2 = document.createElement("div");
-		listCreateTable.appendChild(view2);
-		view2.innerHTML = "単位";
-		view2.style.cssText = 'position:absolute;top:0px;left:15%;border:solid 1px;min-width:50px;width:7.5%;background-color:grey;padding:5px;text-align:center;box-sizing: border-box;';
-		view2.id = "view2_sample";
-
-		var view3 = document.createElement("div");
-		listCreateTable.appendChild(view3);
-		view3.innerHTML = "単価";
-		view3.style.cssText = 'position:absolute;top:0px;left:22.5%;border:solid 1px;min-width:50px;width:7.5%;background-color:grey;padding:5px;text-align:center;box-sizing: border-box;';
-		view3.id = "view3_sample";
-
-		var view4 = document.createElement("div");
-		listCreateTable.appendChild(view4);
-		view4.innerHTML = "消費期間";
-		view4.style.cssText = 'position:absolute;top:0px;left:30%;border:solid 1px;min-width:100px;width:15%;background-color:grey;padding:5px;text-align:center;box-sizing: border-box;';
-		view4.id = "view4_sample";
-
-		var view5 = document.createElement("div");
-		listCreateTable.appendChild(view5);
-		view5.innerHTML = "仕入れ店";
-		view5.style.cssText = 'position:absolute;top:0px;left:45%;border:solid  1px;min-width:100px;width:15%;background-color:grey;padding:5px;text-align:center;box-sizing: border-box;';
-		view5.id = "view5_sample";
-
-		var view6 = document.createElement("div");
-		listCreateTable.appendChild(view6);
-		view6.innerHTML = "食材備考";
-		view6.style.cssText = 'position:absolute;top:0px;left:60%;border:solid 1px;min-width:250px;width:40%;background-color:grey;padding:5px;text-align:center;box-sizing: border-box;';
-		view6.id = "view6_sample";
-
-
-
-		for (j = 0; ; j++) {
-			var rcheck = "chbox" + j;
-			if (document.getElementById(rcheck) != null) {
-				var x = document.getElementById(rcheck).checked;
-				if (x == true) {
-					var elem = document.createElement("div");
-					listCreateTable.appendChild(elem);
-					elem.setAttribute("class", "recheck");
-					elem.id = "elem" + j;
-					for (i = 1; i < 8; i++) {
-						var delem = j * 10 + i;
-						if (delem % 10 == 2) {
-							var x = document.getElementById(delem).innerHTML;
-							var input1 = document.createElement("input");
-							elem.appendChild(input1);
-							input1.setAttribute('value', x);
-							input1.setAttribute("readonly", "true");
-							input1.style.cssText = 'position:relative;min-width:100px;width:15%;height:35px;padding:5px;text-align:center;box-sizing: border-box;'
-							var inpu = "input1_" + j + i;
-							input1.setAttribute('id', inpu);
-						} else if (delem % 10 == 3 || delem % 10 == 4) {
-							var x = document.getElementById(delem).innerHTML;
-							var input1 = document.createElement("input");
-							elem.appendChild(input1);
-							input1.setAttribute('value', x);
-							input1.style.cssText = 'position:relative;min-width:50px;width:7.5%;height:35px;padding:5px;text-align:center;box-sizing: border-box;'
-							var inpu = "input1_" + j + i;
-							input1.setAttribute('id', inpu);
-						} else if (delem % 10 == 5 || delem % 10 == 6) {
-							var x = document.getElementById(delem).innerHTML;
-							var input1 = document.createElement("input");
-							elem.appendChild(input1);
-							input1.setAttribute('value', x);
-							input1.style.cssText = 'position:relative;min-width:100px;width:15%;height:35px;padding:5px;text-align:center;box-sizing: border-box;'
-							var inpu = "input1_" + j + i;
-							input1.setAttribute('id', inpu);
-						} else if (delem % 10 == 7) {
-							var x = document.getElementById(delem).innerHTML;
-							var input1 = document.createElement("input");
-							elem.appendChild(input1);
-							input1.setAttribute('value', x);
-							input1.style.cssText = 'position:relative;min-width:240px;width:40%;height:35px;padding:5px;text-align:center;box-sizing: border-box;'
-							var inpu = "input1_" + j + i;
-							input1.setAttribute('id', inpu);
-						} else if (delem % 10 == 1) {
-							var x = document.getElementById(delem).innerHTML;
-							var input1 = document.createElement("input");
-							elem.appendChild(input1);
-							input1.setAttribute('value', x);
-							input1.setAttribute("readonly", "true");
-							input1.style.cssText = 'position:fixed;top:50px;display:none;'
-							var inpu = "input1_" + j + i;
-							input1.setAttribute('id', inpu);
-						} else {
-
-						}
-
-					}
-				}
-			} else {
-				break;
-			}
-
-		}
+		
 		//チェックボックスを表示する
 		var checkboxcol = document.getElementById("checkboxcol");
 		checkboxcol.style.cssText = "padding:5px;width:35px;border:1px black solid;";
@@ -487,6 +375,151 @@ $(function() {
 		for (var i = 0; i < all.length; i++) {
 		 all[i].style.cssText = 'background-color:white;';
 		}	
+		
+
+		var btnreturn = document.createElement("input");
+		field.appendChild(btnreturn);
+		btnreturn.setAttribute('type', "button");
+		btnreturn.setAttribute('value', "戻る");
+		btnreturn.setAttribute('class', "ebase6_returnItemlist");
+		btnreturn.setAttribute('id', "button_rt");
+		btnreturn.style.cssText = "top:250px;left:80%;";	
+		$('#button_rt').off("click");
+		$('#button_rt').on("click", firstpageItem);
+	}
+	
+	function addcorrectdata(){
+		$('#button_rt').remove();
+		$('#button_cc').remove();
+		var reposition = document.getElementById('dataTable') ;
+		var tablecontent = document.getElementById('ebase6_tablecontent');
+		var tbodyRowCount = reposition.tBodies[0].rows.length;
+
+		$('#ebase6_listCreateTable').remove();
+		var listCreateTable = document.createElement("div");
+		listCreateTable.id = "ebase6_listCreateTable";
+		listCreateTable.style.cssText = 'top:250px;';
+		tablecontent.appendChild(listCreateTable);
+		
+				
+		tableit = document.createElement('table');
+		listCreateTable.appendChild(tableit);
+		tableit.id = "tableit";
+		tableit.className = "tablesorter";
+		tableit.style.cssText = 'border-collapse:collapse;';
+		
+		var theadElemit = document.createElement("thead"); 
+		var trElemit = document.createElement("tr");
+		tableit.appendChild(theadElemit);
+		theadElemit.appendChild(trElemit);
+		
+		var view7 = document.createElement("th");
+		tableit.appendChild(view7);
+		view7.innerHTML = "食材ID";
+		view7.id = "view7_sample";
+		view7.style.cssText = 'display:none;';
+
+		var view1 = document.createElement("th");
+		tableit.appendChild(view1);
+		view1.innerHTML = "食材名";
+		view1.id = "view1_sample";
+
+		var view2 = document.createElement("th");
+		tableit.appendChild(view2);
+		view2.innerHTML = "単位";
+		view2.id = "view2_sample";
+
+		var view3 = document.createElement("th");
+		tableit.appendChild(view3);
+		view3.innerHTML = "単価";
+		view3.id = "view3_sample";
+
+		var view4 = document.createElement("th");
+		tableit.appendChild(view4);
+		view4.innerHTML = "消費期間";
+		view4.id = "view4_sample";
+
+		var view5 = document.createElement("th");
+		tableit.appendChild(view5);
+		view5.innerHTML = "仕入れ店";
+		view5.id = "view5_sample";
+
+		var view6 = document.createElement("th");
+		tableit.appendChild(view6);
+		view6.innerHTML = "食材備考";
+		view6.id = "view6_sample";
+		
+		
+		var tbodyElemit = document.createElement('tbody');
+		tableit.appendChild(tbodyElemit);
+		tbodyElemit.setAttribute("id", "tbody_editIt");
+
+
+		var k = 0;
+		for (j = 0;j < tbodyRowCount; j++) {
+			var rcheck = "chbox" + j;
+			var x = document.getElementById(rcheck).checked;
+			if(x == true){
+				var trElem = document.createElement("tr");
+				tbodyElemit.appendChild(trElem);
+				for(i = 0; i < 8; i++){
+				//elem.id = "elem" + j;
+				var delem = j * 10 + i;
+					if (delem % 10 == 2) {
+						var x = document.getElementById(delem).innerHTML;
+						var tdElem = document.createElement("td");
+						trElem.appendChild(tdElem);
+						tdElem.innerHTML = x;
+						tdElem.setAttribute('contenteditable', true);
+						var input = 'input' + k + i;
+						tdElem.setAttribute('id',input);
+						tdElem.style.background = "#fff";
+						tdElem.style.cssText = 'padding:6px;width:110px;border:1px black solid;box-sizing:border-box;text-align:center;color:blue;font-size:10pt;';
+					} else if (delem % 10 == 3 || delem % 10 == 4) {
+						var x = document.getElementById(delem).innerHTML;
+						var tdElem = document.createElement("td");
+						trElem.appendChild(tdElem);
+						tdElem.innerHTML = x;
+						tdElem.setAttribute('contenteditable', true);
+						var input = 'input' + k + i;
+						tdElem.setAttribute('id',input);
+						tdElem.style.background = "#fff";
+						tdElem.style.cssText = 'padding:6px;width:110px;border:1px black solid;box-sizing:border-box;text-align:center;color:blue;font-size:10pt;';
+					} else if (delem % 10 == 5 || delem % 10 == 6) {
+						var x = document.getElementById(delem).innerHTML;
+						var tdElem = document.createElement("td");
+						trElem.appendChild(tdElem);
+						tdElem.innerHTML = x;
+						tdElem.setAttribute('contenteditable', true);
+						var input = 'input' + k + i;
+						tdElem.setAttribute('id',input);
+						tdElem.style.background = "#fff";
+						tdElem.style.cssText = 'padding:6px;width:110px;border:1px black solid;box-sizing:border-box;text-align:center;color:blue;font-size:10pt;';
+					} else if (delem % 10 == 7) {
+						var x = document.getElementById(delem).innerHTML;
+						var tdElem = document.createElement("td");
+						trElem.appendChild(tdElem);
+						tdElem.innerHTML = x;
+						tdElem.setAttribute('contenteditable', true);
+						var input = 'input' + k + i;
+						tdElem.setAttribute('id',input);
+						tdElem.style.background = "#fff";
+						tdElem.style.cssText = 'padding:6px;width:110px;border:1px black solid;box-sizing:border-box;text-align:center;color:blue;font-size:10pt;';
+					} else if (delem % 10 == 1) {
+						var x = document.getElementById(delem).innerHTML;
+						var tdElem = document.createElement("td");
+						trElem.appendChild(tdElem);
+						tdElem.innerHTML = x;
+						var input = 'input' + k + i;
+						tdElem.setAttribute('id',input);
+						tdElem.style.background = "#fff";
+						tdElem.style.cssText = 'padding:8px;width:110px;border:1px black solid;box-sizing:border-box;text-align:center;display:none;';
+					} 
+				}
+				k +=1;
+			}
+
+		}
 		var btn = document.createElement("input");
 		listCreateTable.appendChild(btn);
 		btn.setAttribute('type', "button");
@@ -495,15 +528,17 @@ $(function() {
 		btn.style.cssText = 'position:relative;top:10px;background-color:#FF9B9B;cursor:pointer;';
 		$('#button_cc').off("click");
 		$('#button_cc').on("click", updatedata);
-
+		
 		var btnreturn = document.createElement("input");
 		listCreateTable.appendChild(btnreturn);
 		btnreturn.setAttribute('type', "button");
 		btnreturn.setAttribute('value', "戻る");
 		btnreturn.setAttribute('class', "ebase6_returnItemlist");
 		btnreturn.setAttribute('id', "button_rt");
+		btnreturn.style.cssText = "left:75%;";	
 		$('#button_rt').off("click");
 		$('#button_rt').on("click", firstpageItem);
+		
 	}
 
 
@@ -563,47 +598,25 @@ $(function() {
 	function updatedata() {
 		//var sql = prompt("input sql","");
 		var tableCount = 0;
-		var table = document.getElementById("dataTable");
+		var table = document.getElementById("tableit");
 		var tbodyRowCount = table.tBodies[0].rows.length;
 
 		for (j = 0; j < tbodyRowCount; j++) {
-			var rcheck = "chbox" + j;
-			if (document.getElementById(rcheck) != null) {
-				var countCheck = 0;
-				var countInput = "#elem" + j;
-				if (document.getElementById(rcheck).checked == true) {
-					countCheck = 1;
-				} else {
-					countCheck = 0;
-				}
-				if (countCheck != $(countInput).length) {
-					alert("修正欄と選択欄が一致していないため、ご確認ください");
-					return false;
-				}
-			}
-		}
+					var input_1 = "input" + j + 1;
+					var input_2 = "input" + j + 2;
+					var input_3 = "input" + j + 3;
+					var input_4 = "input" + j + 4;
+					var input_5 = "input" + j + 5;
+					var input_6 = "input" + j + 6;
+					var input_7 = "input" + j + 7;
 
-
-		for (j = 0; j < tbodyRowCount; j++) {
-			var rcheck = "chbox" + j;
-			if (document.getElementById(rcheck) != null) {
-				var x = document.getElementById(rcheck).checked;
-				if (x == true) {
-					var input_1 = "input1_" + j + 2;
-					var input_2 = "input1_" + j + 3;
-					var input_3 = "input1_" + j + 4;
-					var input_4 = "input1_" + j + 5;
-					var input_5 = "input1_" + j + 6;
-					var input_6 = "input1_" + j + 7;
-					var input_7 = j * 10 + 1;
-
-					var name = document.getElementById(input_1).value;
-					var unit = document.getElementById(input_2).value;
-					var cost = document.getElementById(input_3).value;
-					var expperiod = document.getElementById(input_4).value;
-					var supp = document.getElementById(input_5).value;
-					var caution = document.getElementById(input_6).value;
-					var id = document.getElementById(input_7).innerHTML;
+					var name = document.getElementById(input_2).innerHTML;
+					var unit = document.getElementById(input_3).innerHTML;
+					var cost = document.getElementById(input_4).innerHTML;
+					var expperiod = document.getElementById(input_5).innerHTML;
+					var supp = document.getElementById(input_6).innerHTML;
+					var caution = document.getElementById(input_7).innerHTML;
+					var id = document.getElementById(input_1).innerHTML;
 					
 					var tablecontent = document.getElementById("ebase6_tablecontent");
 					tablecontent.style.cssText = "position:absolute;top:90px;left:calc(50% - 338px);"
@@ -722,8 +735,8 @@ $(function() {
 					});
 					
 				
-				}
-			}
+				
+			
 
 		}
 		matHead = document.getElementById('ebase6_matHead');

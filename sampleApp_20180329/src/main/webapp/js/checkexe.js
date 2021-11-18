@@ -282,10 +282,10 @@ $(function(){
 			var input1ID = document.getElementById(input1);
 			var input2ID = document.getElementById(input2);
 			input1ID.onchange = function(){
-				AutoCheckGoods()
+				AutoCheckGoods();
 			}
 			input2ID.onchange = function(){
-				AutoCheckGoods()
+				AutoCheckGoods();
 			}
 		}
 		//新規登録ボタン作成
@@ -609,11 +609,12 @@ $(function(){
 		$('#button_ad').on("click", getInsptCheckedData);
 		
 		var btnreturn = document.createElement("input");
-		tablecontent.appendChild(btnreturn);
+		field.appendChild(btnreturn);
 		btnreturn.setAttribute('type', "button");
 		btnreturn.setAttribute('value', "戻る");
 		btnreturn.setAttribute('class', "ebase6_returnItemlist");
-		btnreturn.style.cssText = "position:absolute;top:430px;left:1100px;width:80px;cursor:pointer;"
+		btnreturn.setAttribute('id', "button_rt");
+		btnreturn.style.cssText = "position:absolute;top:400px;left:80%;";
 		$('.ebase6_returnItemlist').off("click");
 		$('.ebase6_returnItemlist').on("click", $.checkexe);
 		
@@ -630,6 +631,7 @@ $(function(){
 		var table = document.getElementById("dataTable");
 		var tbodyRowCount = table.tBodies[0].rows.length;
 		
+		$('#button_rt').remove();
 		$('#ebase6_listCreateTable').remove();
 		var listCreateTable = document.createElement("div");
 		listCreateTable.id = "ebase6_listCreateTable";
@@ -642,7 +644,7 @@ $(function(){
 		tablech.className = "tablesorter";
 		tablech.style.cssText = 'border-collapse:collapse;';
 		
-		var theadElemCh = document.createElement("thead");  //DOM型で要素をAppendしていく
+		var theadElemCh = document.createElement("thead"); 
 		var trElemCh = document.createElement("tr");
 		tablech.appendChild(theadElemCh);
 		theadElemCh.appendChild(trElemCh);
@@ -691,6 +693,7 @@ $(function(){
 		tablech.appendChild(view9);
 		view9.innerHTML = "検品ID";
 		view9.id = "view8_sample";
+		view9.style.cssText = 'display:none;';
 		
 		var tbodyElemch = document.createElement('tbody');
 		tablech.appendChild(tbodyElemch);
@@ -710,7 +713,6 @@ $(function(){
 						var tdElem = document.createElement("td");
 						trElem.appendChild(tdElem);
 						tdElem.innerHTML = x
-						//tdElem.setAttribute('value', x);
 						tdElem.style.background = "#fff";
 						tdElem.style.cssText = 'padding:8px;width:110px;border:1px black solid;box-sizing:border-box;text-align:center;';
 					} else if(i == 2){
@@ -774,7 +776,7 @@ $(function(){
 						var x = document.getElementById(delem).innerHTML;
 						var tdElem = document.createElement("td");
 						trElem.appendChild(tdElem);
-						tdElem.style.cssText = 'padding:8px;width:110px;border:1px black solid;box-sizing:border-box;text-align:center;';
+						tdElem.style.cssText = 'padding:8px;width:110px;border:1px black solid;box-sizing:border-box;text-align:center;display:none;';
 						tdElem.innerHTML = x;
 						var inpu = "inputch_" + k + i;
 						tdElem.setAttribute('id', inpu);
@@ -788,12 +790,22 @@ $(function(){
 			
 		}
 		
+		var btnreturn = document.createElement("input");
+		listCreateTable.appendChild(btnreturn);
+		btnreturn.setAttribute('type', "button");
+		btnreturn.setAttribute('value', "戻る");
+		btnreturn.setAttribute('class', "ebase6_returnItemlist");
+		btnreturn.setAttribute('id', "button_rt");
+		btnreturn.style.cssText = "left:72%;";
+		$('.ebase6_returnItemlist').off("click");
+		$('.ebase6_returnItemlist').on("click", $.checkexe);
+		
 		var btn = document.createElement("input");
 		listCreateTable.appendChild(btn);
 		btn.setAttribute('type', "button");
 		btn.setAttribute('value', "修正確定");
 		btn.setAttribute('id', "button_cc");
-		btn.style.cssText = 'position:relative;top:10px;left:5px;background-color:#FF9B9B;cursor:pointer;';
+		btn.style.cssText = 'position:relative;top:10px;left:-35px;background-color:#FF9B9B;cursor:pointer;';
 		$('#button_cc').off("click");
 		$('#button_cc').on("click", updateInspt);
 		

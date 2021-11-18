@@ -25,19 +25,22 @@
 		
 		<input type="text" id="ebase_time_boxmain">
 		<script>
-		var today = new Date();
-		var hour = today.getHours();
-		if(hour <10){
-			hour = '0'+ hour
+		function doDate(){
+			var today = new Date();
+			var hour = today.getHours();
+			if(hour <10){
+				hour = '0'+ hour
+			}
+			var minute = today.getMinutes();
+			if(minute <10){
+				minute = '0' + minute
+			}
+			var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+			var time = hour + ":" + minute;
+			var dateTime = date+' '+time;
+	 		 document.getElementById("ebase_time_boxmain").value = dateTime;
 		}
-		var minute = today.getMinutes();
-		if(minute <10){
-			minute = '0' + minute
-		}
-		var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-		var time = hour + ":" + minute;
-		var dateTime = date+' '+time;
- 		 document.getElementById("ebase_time_boxmain").value = dateTime;
+		setInterval(doDate, 1000);
 		</script>
 		<button id="ebase6_logout" type="button">ログアウト</button>
 					<!-- Control Menu  //-->
@@ -131,5 +134,6 @@
 <script type="text/javascript" src="js/itemlist.js"></script>
 <script type="text/javascript" src="js/orderexe.js"></script>
 <script type="text/javascript" src="js/checkexe.js"></script>
+<script type="text/javascript" src="js/stockcount.js"></script>
 
 </html>
