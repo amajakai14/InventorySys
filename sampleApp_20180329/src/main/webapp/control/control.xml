@@ -58,6 +58,36 @@
 		<loglevel>TRACE</loglevel>
 		<logonignore>true</logonignore>
 	</QUBE>	
+	<QUBE id="CountDaySales">
+		<logic>com.excellence.ebase6.BLJCountDaySales</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>	
+	<QUBE id="StockCountInsert">
+		<logic>com.excellence.ebase6.BLJStockCountInsert</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>	
+	<QUBE id="DaySaleInsert">
+		<logic>com.excellence.ebase6.BLJDaySaleInsert</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>	
+	<QUBE id="DaySalesbyDay">
+		<logic>com.excellence.ebase6.BLJDaySalesbyDay</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>		
+	<QUBE id="DaySalesbyDay2">
+		<logic>com.excellence.ebase6.BLJDaySalesbyDay2</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>				
 	<QUBE id="InsertData">
 		<logic>com.excellence.ebase6.BLJInsertData</logic>
 		<urls>JSON</urls>
@@ -108,6 +138,12 @@
 	</QUBE>
 	<QUBE id="InspectUpdateData">
 		<logic>com.excellence.ebase6.BLJInspectUpdateData</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>
+	<QUBE id="InventoryManagement">
+		<logic>com.excellence.ebase6.BLJInventoryManagement</logic>
 		<urls>JSON</urls>
 		<loglevel>TRACE</loglevel>
 		<logonignore>true</logonignore>

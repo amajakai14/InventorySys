@@ -15,24 +15,40 @@ import com.excellence.dqube.base.JsonMap;
 import com.excellence.dqube.base.PModel;
 import com.excellence.dqube.base.XMLParserAPI;
 
-	public class BLJCountingStock extends BLJsonMap4DB implements IBisinessLogic {
+/**
+ * 指定したSQLを実行する
+ * SQLを実行し、JsonMapを応答する
+ * @author S.Yoshizawa
+ * @category Logic
+ * @version 1.0
+ * @since 1.0
+ *
+ */
+public class BLJDaySaleInsert extends BLJsonMap4DB implements IBisinessLogic {
 
-		@Override
-		public void setModel(IModel model){
+	@Override
+	public void setModel(IModel model){
 
-			super.setModel(model);
+		super.setModel(model);
 
-			super.pageTitle = "BLJCountingStock";
+		super.pageTitle = "BLJDaySaleInsert";
 
-			super.defaultSQL = "select * from Inventory_Count where Date = ?";
+		super.defaultSQL = "insert into DaySales_T (Date, Sales, COGS, CostMargin, WasteAmt, LossRate, GrossProfit) values (curdate(), ?, ?, ?, ?, ?, ?);";
 
-		}
+	}
 
 	@Override
 	public boolean innerLogic(){
 		boolean rtnFlg = true; //処理結果
 
-		String ytd = firstParam("ytd");
+		String  sales = firstParam("sales");
+		String  cogs = firstParam("cogs");
+		String  costmar = firstParam("costmar");
+		String  twaste = firstParam("twaste");
+		String  tlossrate = firstParam("tlossrate");
+		String  gp = firstParam("gp");
+
+		
 		//格納モデルをインスタンス化
 		outModel = new PModel();
 
@@ -93,12 +109,16 @@ import com.excellence.dqube.base.XMLParserAPI;
 
 		try{
 
-			$pstm.setDate(1, java.sql.Date.valueOf(ytd));
-
+			$pstm.setInt(1,Integer.parseInt(sales));
+			$pstm.setInt(2, Integer.parseInt(cogs));
+			$pstm.setFloat(3, Float.parseFloat(costmar));
+			$pstm.setInt(4, Integer.parseInt(twaste));
+			$pstm.setFloat(5, Float.parseFloat(tlossrate));
+			$pstm.setInt(6, Integer.parseInt(gp));
 			$pstm.execute();
 
 			if($recode == null){
-				//sql="SELECT MaterialID, MaterialName,Unit, UnitCost, ExpPeriod, Supplier, MatRemark from Material_M";
+				//sql="select * from ;";
 				//setSQL(sql);
 
 				if(executeSQL()) {
@@ -175,4 +195,3 @@ import com.excellence.dqube.base.XMLParserAPI;
 	}
 
 }
-	

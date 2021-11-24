@@ -1,5 +1,5 @@
-/**
- * javascript for inventorycount
+/*
+ * javascript for stockcount
  */
 $(function(){
 	$.stockcount = function stockcount(){
@@ -7,20 +7,30 @@ $(function(){
 	}
 	
 	function firstpageStockCount(){
+		$('.ebase6_mainReturn').css('display','none');
 		$('#datafield').empty();
 		$('#ebase6_matHead').remove();
 		$('#dataTableInv').remove();
+		$('#tbody_stock').remove();
 		var field = document.getElementById("datafield");
+		btnreturn = document.createElement('input');
+		field.appendChild(btnreturn);
+		btnreturn.setAttribute('type','button');
+		btnreturn.setAttribute('value','Mainに戻る');
+		btnreturn.id = 'ebase6_mainReturnID';
+		btnreturn.style.cssText = "position:absolute;top:700px;left:600px;display:block;";
+		$('#ebase6_mainReturnID').off("click");
+		$('#ebase6_mainReturnID').on("click", mainReturn);
 		
 		var matHead = document.createElement("div");
 		matHead.id = "ebase6_matHead";
-		matHead.style.cssText = "left:calc(50% - 100px);"
+		matHead.style.cssText = "left:calc(50% - 100px);";
 		field.appendChild(matHead);
 
 		var stockHeadText = document.createElement("div");
 		stockHeadText.id = "ebase6_StockHeadText";
 		matHead.appendChild(stockHeadText);
-		$('#ebase6_StockHeadText').html("棚卸")
+		$('#ebase6_StockHeadText').html("棚卸");
 		
 		var selectdate = document.createElement("input");
 		field.appendChild(selectdate);
@@ -31,44 +41,456 @@ $(function(){
 		selectdate.setAttribute('value',date);
 		selectdate.style.cssText = "margin-left:20px;border:black;box-sizing:border-box;";
 		
+		
 		var stckcount = document.createElement("input");
 		field.appendChild(stckcount);
 		stckcount.setAttribute('type', "button");
 		stckcount.setAttribute('value', "棚卸情報入力");
 		stckcount.setAttribute('id', "button_sc");
-		stckcount.style.cssText = "position:absolute;left:80%;";
+		stckcount.style.cssText = "position:absolute;left:80%;background-color:#7CFC00;";
 		$('#button_sc').off("click");
-		$('#button_sc').on("click", Countingstock);
+		$('#button_sc').on("click", WorknotdoneCNF);
+		
+		$('#ebase6_tablecontentmain').remove();
+			$('#ebase6_tablecontentdetail').remove();
+			var dateselect = selectdate.value;
+			
+		var tablecontentmain = document.createElement('div');
+		tablecontentmain.id = 'ebase6_tablecontentmain';
+		field.appendChild(tablecontentmain);
+		
+		var tablemng2 = document.createElement("table");
+		tablecontentmain.appendChild(tablemng2);
+		tablemng2.className = "tablesorter";
+		tablemng2.id = "dataTableMain";
+		
+		
+		$.postJSON("DQube", {actionID: 'DaySalesbyDay2',dateselect:dateselect}, function(jres) {
+			
+			var theadElem = document.createElement("thead");
+				var trElem = document.createElement("tr");
+				tablemng2.appendChild(theadElem);
+				theadElem.appendChild(trElem);
+				
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "";
+				
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "売上";
+				
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "売上原価";
+				
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "原価率(%)";
+			
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "廃棄額";
+			
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "ロス率(%)";
+			
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "収支";
+				
+			var tbodyElem = document.createElement("tbody");
+			tablemng2.appendChild(tbodyElem);
+			
+			
+			//データ行を作成
+	
+				//データのヒットがない場合、空行を作成
+				if (jres.tblData.length == 0) {
+					var trElem = document.createElement("tr");
+					tbodyElem.appendChild(trElem);
+					for (i = 0; i < jres.keys.length; i++) {
+						if(i == 0){
+							var tdElem = document.createElement("td");
+							trElem.appendChild(tdElem);
+							tdElem.style.background = "#fff";
+							tdElem.innerHTML = "総計";
+						}else{
+							var tdElem = document.createElement("td");
+							trElem.appendChild(tdElem);
+							tdElem.innerHTML = '';
+							tdElem.style.background = "FC2604";
+							tdElem.style.cssText = 'height:26px;box-sizing:border-box;';
+						};
+					};
+				};
+				for (j = 0; j < jres.tblData.length; j++){
+					var trElem = document.createElement("tr");
+					tbodyElem.appendChild(trElem);
+					for(i =0;i<7;i++){
+						if(i == 0){
+							var tdElem = document.createElement("td");
+							trElem.appendChild(tdElem);
+							tdElem.style.background = "#fff";
+							tdElem.innerHTML = "総計";
+							setid = 'tablemng' + i;
+							tdElem.setAttribute('id',setid);
+						} else{
+							var tdElem = document.createElement("td");
+							trElem.appendChild(tdElem);
+							tdElem.style.background = "#fff";
+							var col = jres.keys[i];
+							tdElem.innerHTML = jres.tblData[j][col];
+							setid = 'tablemng' + i;
+							tdElem.setAttribute('id',setid);
+						};
+						
+					};
+				};
+				return false;
+			});
+			
+			
+			var tablecontentdetail = document.createElement('div');
+			 tablecontentdetail.id = 'ebase6_tablecontentdetail';
+			field.appendChild( tablecontentdetail);
+			
+			var tabledetail = document.createElement("table");
+				tablecontentdetail.appendChild(tabledetail);
+				tabledetail.className = "tablesorter";
+				tabledetail.id = "tabledetail";
+			
+			$.postJSON("DQube", { actionID: 'DaySalesbyDay',dateselect:dateselect}, function(jres) {
+				//DOM型で要素をAppendしていく
+				var theadElem = document.createElement("thead");
+				var trElem = document.createElement("tr");
+				tabledetail.appendChild(theadElem);
+				theadElem.appendChild(trElem);
+	
+	
+				for (i = 1; i <= jres.keys.length; i++) {
+					//テーブルにカラム名を表示
+					var col = jres.keys[i];
+					 if (i == 1) {
+						var thElem = document.createElement("th");
+						trElem.appendChild(thElem);
+						thElem.innerHTML = "食材名";
+					} else if (i == 2) {
+						var thElem = document.createElement("th");
+						trElem.appendChild(thElem);
+						thElem.innerHTML = "消費数";
+					} else if (i == 3) {
+						var thElem = document.createElement("th");
+						trElem.appendChild(thElem);
+						thElem.innerHTML = "原価";
+					} else if (i == 4) {
+						var thElem = document.createElement("th");
+						trElem.appendChild(thElem);
+						thElem.innerHTML = "廃棄数";
+					} else if (i == 5) {
+						var thElem = document.createElement("th");
+						trElem.appendChild(thElem);
+						thElem.innerHTML = "廃棄額";
+					} else if (i == 6) {
+						var thElem = document.createElement("th");
+						trElem.appendChild(thElem);
+						thElem.innerHTML = "ロス率";
+					};
+				};
+	
+				//データ行を作成
+				var tbodyElem = document.createElement("tbody");
+				tabledetail.appendChild(tbodyElem);
+				tbodyElem.setAttribute('id','tbody_stock2');
+				tbodyElem.style.cssText = 'display:block;height:430px;position:absolute;overflow:auto;overflow-x:hidden;';
+	
+				//データのヒットがない場合、空行を作成
+				if (jres.tblData.length == 0) {
+					var trElem = document.createElement("tr");
+					tbodyElem.appendChild(trElem);
+					for (i = 0; i < jres.keys.length; i++) {
+						var tdElem = document.createElement("td");
+						trElem.appendChild(tdElem);
+						tdElem.innerHTML = "";
+						tdElem.style.cssText = 'height:26px;box-sizing:border-box;';
+						tdElem.style.background = "#fff";
+					};
+				};
+	
+				for (j = 0; j < jres.tblData.length; j++) { //データの書きだし
+					var trElem = document.createElement("tr");
+					tbodyElem.appendChild(trElem);
+					for (i = 0; i < jres.keys.length; i++) {
+						var tdElem = document.createElement("td");
+						trElem.appendChild(tdElem);
+						tdElem.style.background = "#fff";
+							var col = jres.keys[i];
+							tdElem.innerHTML = jres.tblData[j][col];
+					};
+				};
+				var x = tabledetail.tBodies[0].rows.length;
+				var hadjust = 34+34*x;
+				tabledetail.style.cssText = "position:absolute;width:616px;height:"+hadjust+"px;max-height:510px;";
+				
+				var spaceadjust = hadjust + 15;
+				if(spaceadjust > 515){
+					spaceadjust = 515;
+				};
+				
+				var spaceadjust2 = spaceadjust + 5;
+				if(spaceadjust > 520){
+					spaceadjust = 520;
+				};
+				var space = document.createElement("div");
+				tablecontentdetail.appendChild(space);
+				space.style.cssText = "position:relative;top:"+spaceadjust2+"px;left:930px;padding:1px;";
+				space.innerHTML = '';
+				
+				//背景色の高さはデータ量による
+				var x = tabledetail.tBodies[0].rows.length;
+				if(x != 1){
+				var hadjust = 27+30*x;
+				tabledetail.style.cssText = "position:absolute;width:616px;height:"+hadjust+"px;max-height:460px;"
+				}else{
+					tabledetail.style.cssText = "position:absolute;width:616px;height:62px;"
+				};
+	
+				$("#tabledetail").tablesorter({
+					widgets: ['zebra'],
+					sortList: [[2, 1]],
+	
+				});
+				$("#tabledetail").trigger("update");
+				//$.ajaxSetup({ async: true }); //同期の解除
+				return false;
+			});
 		
 		clickdate = document.getElementById('inputdate').onchange = function(){
+			$('#tabledetail').remove();
+			$('#ebase6_tablecontentmain').remove();
+			$('#ebase6_tablecontentdetail').remove();
+			var dateselect = selectdate.value;
+			
+		var tablecontentmain = document.createElement('div');
+		tablecontentmain.id = 'ebase6_tablecontentmain';
+		field.appendChild(tablecontentmain);
+		
+		var tablemng2 = document.createElement("table");
+		tablecontentmain.appendChild(tablemng2);
+		tablemng2.className = "tablesorter";
+		tablemng2.id = "dataTableMain";
+			
+		$.postJSON("DQube", { actionID: 'DaySalesbyDay2',dateselect:dateselect}, function(jres) {
+			
+			var theadElem = document.createElement("thead");
+				var trElem = document.createElement("tr");
+				tablemng2.appendChild(theadElem);
+				theadElem.appendChild(trElem);
 				
-			var table1 = document.createElement("table");
-			field.appendChild(table1);
-			table1.className = "tablesorter";
-			table1.id = "daySaleTable";
-		}
-		
-		
-	}
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "";
+				
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "売上";
+				
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "売上原価";
+				
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "原価率(%)";
+			
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "廃棄額";
+			
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "ロス率(%)";
+			
+			var thElem = document.createElement("th");
+				trElem.appendChild(thElem);
+				thElem.innerHTML = "収支";
+				
+			var tbodyElem = document.createElement("tbody");
+			tablemng2.appendChild(tbodyElem);
+			tbodyElem.setAttribute("id", "dataTableInv2");
+			
+			//データ行を作成
+	
+				//データのヒットがない場合、空行を作成
+				if (jres.tblData.length == 0) {
+					var trElem = document.createElement("tr");
+					tbodyElem.appendChild(trElem);
+					for (i = 0; i < jres.keys.length; i++) {
+						if(i == 0){
+							var tdElem = document.createElement("td");
+							trElem.appendChild(tdElem);
+							tdElem.style.background = "#fff";
+							tdElem.innerHTML = "総計";
+						}else{
+							var tdElem = document.createElement("td");
+							trElem.appendChild(tdElem);
+							tdElem.innerHTML = '';
+							tdElem.style.background = "FC2604";
+							tdElem.style.cssText = 'height:26px;box-sizing:border-box;';
+						};
+					};
+				};
+				for (j = 0; j < jres.tblData.length; j++){
+					var trElem = document.createElement("tr");
+					tbodyElem.appendChild(trElem);
+					for(i =0;i<7;i++){
+						if(i == 0){
+							var tdElem = document.createElement("td");
+							trElem.appendChild(tdElem);
+							tdElem.style.background = "#fff";
+							tdElem.innerHTML = "総計";
+							setid = 'tablemng' + i;
+							tdElem.setAttribute('id',setid);
+						} else{
+							var tdElem = document.createElement("td");
+							trElem.appendChild(tdElem);
+							tdElem.style.background = "#fff";
+							var col = jres.keys[i];
+							tdElem.innerHTML = jres.tblData[j][col];
+							setid = 'tablemng' + i;
+							tdElem.setAttribute('id',setid);
+						};
+						
+					};
+				};
+				return false;
+			});
+			
+			
+			var tablecontentdetail = document.createElement('div');
+			 tablecontentdetail.id = 'ebase6_tablecontentdetail';
+			field.appendChild( tablecontentdetail);
+			
+			var tabledetail = document.createElement("table");
+				tablecontentdetail.appendChild(tabledetail);
+				tabledetail.className = "tablesorter";
+				tabledetail.id = "tabledetail";
+			
+			$.postJSON("DQube", {actionID:'DaySalesbyDay', dateselect:dateselect}, function(jres) {
+				//DOM型で要素をAppendしていく
+				var theadElem = document.createElement("thead");
+				var trElem = document.createElement("tr");
+				tabledetail.appendChild(theadElem);
+				theadElem.appendChild(trElem);
+	
+	
+				for (i = 1; i <= jres.keys.length + 1; i++) {
+					//テーブルにカラム名を表示
+					var col = jres.keys[i];
+					 if (i == 1) {
+						var thElem = document.createElement("th");
+						trElem.appendChild(thElem);
+						thElem.innerHTML = "食材名";
+					} else if (i == 2) {
+						var thElem = document.createElement("th");
+						trElem.appendChild(thElem);
+						thElem.innerHTML = "消費数";
+					} else if (i == 3) {
+						var thElem = document.createElement("th");
+						trElem.appendChild(thElem);
+						thElem.innerHTML = "原価";
+					} else if (i == 4) {
+						var thElem = document.createElement("th");
+						trElem.appendChild(thElem);
+						thElem.innerHTML = "廃棄数";
+					} else if (i == 5) {
+						var thElem = document.createElement("th");
+						trElem.appendChild(thElem);
+						thElem.innerHTML = "廃棄額";
+					} else if (i == 6) {
+						var thElem = document.createElement("th");
+						trElem.appendChild(thElem);
+						thElem.innerHTML = "ロス率";
+					};
+				};
+	
+				//データ行を作成
+				var tbodyElem = document.createElement("tbody");
+				tabledetail.appendChild(tbodyElem);
+				tbodyElem.setAttribute('id','tbody_stock2');
+				tbodyElem.style.cssText = 'display:block;height:430px;position:absolute;overflow:auto;overflow-x:hidden;';
+	
+				//データのヒットがない場合、空行を作成
+				if (jres.tblData.length == 0) {
+					var trElem = document.createElement("tr");
+					tbodyElem.appendChild(trElem);
+					for (i = 0; i < jres.keys.length; i++) {
+						var tdElem = document.createElement("td");
+						trElem.appendChild(tdElem);
+						tdElem.innerHTTML = '';
+						tdElem.style.cssText = 'height:26px;';
+						tdElem.style.background = "#fff";
+					};
+				};
+				for (j = 0; j < jres.tblData.length; j++) { //データの書きだし
+					var trElem = document.createElement("tr");
+					tbodyElem.appendChild(trElem);
+					for (i = 0; i < jres.keys.length; i++) {
+						var tdElem = document.createElement("td");
+						trElem.appendChild(tdElem);
+						tdElem.style.background = "#fff";
+							var col = jres.keys[i];
+							tdElem.innerHTML = jres.tblData[j][col];
+					};
+				};
+				$("#tabledetail").tablesorter({
+					widgets: ['zebra'],
+					sortList: [[2, 1]],
+				});
+				
+				//背景色の高さはデータ量による
+				var x = tabledetail.tBodies[0].rows.length;
+				if(x != 1){
+				var hadjust = 27+30*x;
+				tabledetail.style.cssText = "position:absolute;width:616px;height:"+hadjust+"px;max-height:460px;";
+				}else{
+					tabledetail.style.cssText = "position:absolute;width:616px;height:62px;";
+				};
+				
+				var spaceadjust = hadjust + 15;
+				if(spaceadjust > 515){
+					spaceadjust = 515;
+				};
+				
+				var spaceadjust2 = spaceadjust + 5;
+				if(spaceadjust2 > 520){
+					spaceadjust2 = 520;
+				};
+				var space = document.createElement("div");
+				tablecontentdetail.appendChild(space);
+				space.style.cssText = "position:relative;top:"+spaceadjust2+"px;left:930px;padding:1px;";
+				space.innerHTML = '';	
+					
+					
+				$("#dataTable").trigger("update");
+				//$.ajaxSetup({ async: true }); //同期の解除
+				return false;
+			});
+		};
+	};
 	
 	function Countingstock(){
-		
+		$('#ebase6_tablecontentmain').remove();
 		$('#ebase6_matHead').remove();
 		$('#ebase6_matSubText').remove();
 		$('.ebase6_mainReturn').css('display', 'none');
 		$('#button_sc').remove();
 		$('#inputdate').remove();
+		$('#dataTableInv').remove();
+		$('#ebase6_mainReturnID').remove();
 		
 		field = document.getElementById('datafield');
-		selectdate = document.createElement('input');
-		field.appendChild(selectdate);
-		var today = new Date();
-		var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-		selectdate.setAttribute('type','date');
-		selectdate.setAttribute('value',date);
-		selectdate.setAttribute('id','inputdate');
-		selectdate.setAttribute('readonly','true');
-		selectdate.style.cssText = "margin-left:20px;border:black;box-sizing:border-box;background-color:unset;";
 		
 		var matHead = document.createElement("div");
 		matHead.id = "ebase6_matHead";
@@ -77,14 +499,23 @@ $(function(){
 
 		var matHeadText = document.createElement("div");
 		matHeadText.id = "ebase6_PoHeadText";
+		matHeadText.style.cssText = "background-color: #f1b51d;";
 		matHead.appendChild(matHeadText);
 		$('#ebase6_PoHeadText').html("棚卸")
 
 		var matSubText = document.createElement("div");
 		matSubText.id = "ebase6_matSubText";
 		matHead.appendChild(matSubText);
-		matSubText.style.cssText = "background-color: #FF9B9B;"
+		matSubText.style.cssText = "background-color: #FF9B9B;";
 		$('#ebase6_matSubText').html("棚卸情報入力");
+		
+		var btninsert = document.createElement("input");
+		field.appendChild(btninsert);
+		btninsert.setAttribute('type', "button");
+		btninsert.setAttribute('value', "棚卸確定");
+		btninsert.setAttribute('id', "button_InvCnf");
+		$('#button_InvCnf').off("click");
+		$('#button_InvCnf').on("click", StockInsert);
 		
 		var Daysalebox =document.createElement('div');
 		field.appendChild(Daysalebox);
@@ -92,17 +523,17 @@ $(function(){
 		var Daysale = document.createElement('div');
 		Daysalebox.appendChild(Daysale);
 		Daysale.innerHTML = '売上';
-		Daysale.style.cssText = "width:50px;display:inline-block;background:aqua;box-sizing:border-box;border:1px black solid;text-align:center;cursor:default;"
+		Daysale.style.cssText = "width:50px;display:inline-block;background:aqua;box-sizing:border-box;border:1px black solid;text-align:center;cursor:default;";
 		Daysale.onclick = function(){
 			CalDaysum();
-		}
+		};
 		var Daysalevalue = document.createElement('input');
 		Daysalevalue.id = "Revenue";
 		Daysalebox.appendChild(Daysalevalue);
 		Daysalevalue.style.cssText = 'width:100px;box-sizing:border-box;';
 		Daysalevalue.onchange = function(){
 			CalDaysum();
-		} 
+		};
 		
 		//経営テーブル
 		var tablecontentmng = document.createElement('div');
@@ -164,9 +595,9 @@ $(function(){
 				tdElem.innerHTML = "";
 				setid = 'tablemng' + i;
 				tdElem.setAttribute('id',setid);
-			}
+			};
 			
-		}
+		};
 				
 		
 		//Main
@@ -229,22 +660,22 @@ $(function(){
 			var thElem = document.createElement("th");
 			trElem.appendChild(thElem);
 			thElem.innerHTML = "在庫数";
-			thElem.style.cssText = "box-sizing:border-box;"
+			thElem.style.cssText = "box-sizing:border-box;";
 			//7
 			var thElem = document.createElement("th");
 			trElem.appendChild(thElem);
 			thElem.innerHTML = "補填数";
-			thElem.style.cssText = "box-sizing:border-box;"
+			thElem.style.cssText = "box-sizing:border-box;";
 			//8
 			var thElem = document.createElement("th");
 			trElem.appendChild(thElem);
 			thElem.innerHTML = "補填額";
-			thElem.style.cssText = "box-sizing:border-box;"				
+			thElem.style.cssText = "box-sizing:border-box;";			
 			//9
 			var thElem = document.createElement("th");
 			trElem.appendChild(thElem);
 			thElem.innerHTML = "廃棄数";
-			thElem.style.cssText = "box-sizing:border-box;"		
+			thElem.style.cssText = "box-sizing:border-box;";	
 			//10
 			var thElem = document.createElement("th");
 			trElem.appendChild(thElem);
@@ -259,42 +690,43 @@ $(function(){
 			var thElem = document.createElement("th");
 			trElem.appendChild(thElem);
 			thElem.innerHTML = "消費数";
-			thElem.style.cssText = "box-sizing:border-box;"
+			thElem.style.cssText = "box-sizing:border-box;";
 			//13
 			var thElem = document.createElement("th");
 			trElem.appendChild(thElem);
 			thElem.innerHTML = "廃棄額";
-			thElem.style.cssText = "box-sizing:border-box;"
+			thElem.style.cssText = "box-sizing:border-box;";
 			//14
 			var thElem = document.createElement("th");
 			trElem.appendChild(thElem);
 			thElem.innerHTML = "ロス率(%)";
-			thElem.style.cssText = "box-sizing:border-box;"		
+			thElem.style.cssText = "box-sizing:border-box;";		
 			//15
 			var thElem = document.createElement("th");
 			trElem.appendChild(thElem);
 			thElem.innerHTML = "原価";
-			thElem.style.cssText = "box-sizing:border-box;"	
+			thElem.style.cssText = "box-sizing:border-box;";	
 			//16
 			var thElem = document.createElement("th");
 			trElem.appendChild(thElem);
 			thElem.innerHTML = "必要数";
-			thElem.style.cssText = "box-sizing:border-box;"		
+			thElem.style.cssText = "box-sizing:border-box;";	
 			//17
 			var thElem = document.createElement("th");
 			trElem.appendChild(thElem);
 			thElem.innerHTML = "不足数";
-			thElem.style.cssText = "box-sizing:border-box;"	
+			thElem.style.cssText = "box-sizing:border-box;";	
 			
 				
 			
 
 
 			//データ行を作成
+			$('#tbody_stock').remove();
 			var tbodyElem = document.createElement("tbody");
 			table1.appendChild(tbodyElem);
 			tbodyElem.setAttribute('id','tbody_stock');
-			tbodyElem.style.cssText = 'display:block;height:500px;position:absolute;';
+			tbodyElem.style.cssText = 'display:block;height:480px;position:absolute;overflow:auto;overflow-x:hidden;';
 
 			//データのヒットがない場合、空行を作成
 			if(jres.tblData.length==0){
@@ -325,8 +757,8 @@ $(function(){
 					tdElem.setAttribute('id',setid);
 					if(i == 0||i == 2||i == 3){
 						tdElem.setAttribute('class','hidden');
-					}
-				}
+					};
+				};
 				for(i=5;i<18;i++){
 					var tdElem = document.createElement("td");
 					trElem.appendChild(tdElem);
@@ -344,14 +776,36 @@ $(function(){
 						input.style.cssText = "width:100%;border:none;box-sizing:border-box;text-align:right;color:blue;text-align:center;";
 						var inputid = 'inputa' + j + '_' + i;
 						input.setAttribute('id', inputid);
-					}
-				}
-			}
-			var x = table.tBodies[0].rows.length;
+					};
+				};
+			};
+			var x = table1.tBodies[0].rows.length;
 			var hadjust = 34+34*x;
 			table1.style.cssText = "position:absolute;width:676px;height:"+hadjust+"px;max-height:510px;";
 			
-
+			var spaceadjust = hadjust + 15;
+			if(spaceadjust > 515){
+				spaceadjust = 515;
+			}
+			var btnreturn = document.createElement("input");
+			tablecontent.appendChild(btnreturn);
+			btnreturn.setAttribute('type', "button");
+			btnreturn.setAttribute('value', "戻る");
+			btnreturn.setAttribute('class', "ebase6_returnItemlist");
+			btnreturn.style.cssText = "position:relative;top:"+spaceadjust+"px;left:930px;";
+			$('.ebase6_returnItemlist').off("click");
+			$('.ebase6_returnItemlist').on("click", firstpageStockCount);
+			
+			
+			var spaceadjust2 = spaceadjust + 5;
+			if(spaceadjust > 520){
+				spaceadjust = 520;
+			};
+			var space = document.createElement("div");
+			tablecontent.appendChild(space);
+			space.style.cssText = "position:relative;top:"+spaceadjust2+"px;left:930px;padding:1px;";
+			space.innerHTML = '';
+			
 			$("#dataTableInv").trigger("update");
 
 			$.ajaxSetup({ async: true }); //同期
@@ -364,16 +818,20 @@ $(function(){
 		table2.className = "hidden";
 		table2.id = "dataTable2";
 		
+		var Date1 = new Date();
+		Date1.setDate(Date1.getDate() - 6); 
+		var YTD = Date1.getFullYear()+'-'+(Date1.getMonth()+1)+'-'+Date1.getDate();
+		
 		$.ajaxSetup({ async: false }); //同期の解除
-		$.postJSON("DQube",{actionID:'CountingStock'}, function(jres){
+		$.postJSON("DQube",{actionID:'CountingStock',ytd:YTD}, function(jres){
 			//DOM型で要素をAppendしていく
 			var theadElem = document.createElement("thead");
 			var trElem = document.createElement("tr");
 			table2.appendChild(theadElem);
 			theadElem.appendChild(trElem);
-
-			var ssSearch = document.getElementById("ss_select");
-
+			
+			
+			
 			for(i=0;i<jres.keys.length;i++){
 				//テーブルにカラム名を表示
 				var col = jres.keys[i];
@@ -381,7 +839,7 @@ $(function(){
 				trElem.appendChild(thElem);
 				thElem.className = jres.tblColData[col]["classname"];
 				thElem.innerHTML=jres.tblColData[col]["name"];
-			}
+			};
 
 			//データ行を作成
 			var tbodyElem = document.createElement("tbody");
@@ -394,11 +852,11 @@ $(function(){
 				for(i=0;i<jres.keys.length;i++){
 					var tdElem = document.createElement("td");
 					trElem.appendChild(tdElem);
-					//tdElem.innerHTML = '0';
-					setid = 'tableb' + j + '_' + i;
+					tdElem.innerHTML = 'x';
+					setid = 'tableb' + 0 + '_' + i;
 					tdElem.setAttribute('id',setid);
-				}
-			}
+				};
+			};
 
 			for(j=0;j<jres.tblData.length;j++){ //データの書きだし
 				var trElem = document.createElement("tr");
@@ -411,15 +869,15 @@ $(function(){
 					tdElem.innerHTML = jres.tblData[j][col];
 					setid = 'tableb' + j + '_' + i;
 					tdElem.setAttribute('id',setid);
-				}
-			}
-
+				};
+			};
+			
 
 			$("#dataTableInv").trigger("update");
 
 			$.ajaxSetup({ async: true }); //同期の解除
 			return false;
-		});		
+		});	
 		//今日の検品情報
 		var table3 = document.createElement("table");
 		tablecontent.appendChild(table3);
@@ -441,7 +899,7 @@ $(function(){
 				trElem.appendChild(thElem);
 				thElem.className = jres.tblColData[col]["classname"];
 				thElem.innerHTML=jres.tblColData[col]["name"];
-			}
+			};
 
 			//データ行を作成
 			var tbodyElem = document.createElement("tbody");
@@ -457,8 +915,8 @@ $(function(){
 					tdElem.innerHTML = '0';
 					setid = 'tablec' + 0 + '_' + i;
 					tdElem.setAttribute('id',setid);
-				}
-			}
+				};
+			};
 
 			for(j=0;j<jres.tblData.length;j++){ //データの書きだし
 				var trElem = document.createElement("tr");
@@ -472,10 +930,10 @@ $(function(){
 					setid = 'tablec' + j + '_' + i;
 					tdElem.setAttribute('id',setid);
 					
-				}
-			}
-
-
+				};
+			};
+			
+			
 			$("#dataTableInv").trigger("update");
 
 			$.ajaxSetup({ async: true }); //同期の解除
@@ -502,26 +960,25 @@ $(function(){
 				GoodsLossRate();
 				CalInvShort();
 				SumWaste();
-			}
+			};
 			input2ID.onchange = function(){
 				GoodsSaleAmount();
-				SumWaste()
+				SumWaste();
 				GoodsLossRate();
-				
-			}
+			};
 			input3ID.onchange = function(){
 				GoodsCost();
 				GoodsSaleAmount();
-				SumWaste()
+				SumWaste();
 				GoodsLossRate();
-			}
+			};
 			input4ID.onchange = function(){
 				GoodsSaleAmount();
 				GoodsLossRate();
 				SumWaste();
-			}
-		}
-	}
+			};
+		};
+	};
 	
 	function lastestInv(){
 		var table1 = document.getElementById('dataTableInv');
@@ -544,10 +1001,10 @@ $(function(){
 				} else{
 					sett1col5.innerHTML = '0';
 				}
-				
-			}
-		}
-	}
+			};
+		};
+	};
+	
 	
 	function GoodsInToday(){
 		var table1 = document.getElementById('dataTableInv');
@@ -575,11 +1032,11 @@ $(function(){
 				} else{
 					sett1col10.innerHTML = '0';
 					sett1col11.innerHTML = '0';
-				}
-				
-			}
-		}
-	}
+				};
+			};
+
+		};
+	};
 	
 	function GoodsSaleAmount(){
 		var table1 = document.getElementById('dataTableInv');
@@ -594,7 +1051,7 @@ $(function(){
 			var t1col7 = 'inputa' + j + '_' + 7;
 			var gett1col7 = document.getElementById(t1col7);
 			if(gett1col7.value == ''){
-				gett1col7.value = '0'
+				gett1col7.value = '0';
 			}
 			var t1col8 = 'inputa' + j + '_' + 8;
 			var gett1col8 = document.getElementById(t1col8);
@@ -611,7 +1068,7 @@ $(function(){
 				gett1col15.style.cssText = "color:black;";
 			}
 			if(gett1col8.value == ''){
-				gett1col8.value = '0'
+				gett1col8.value = '0';
 			}
 			if(gett1col7.value == '0' && gett1col8.value != '0'){
 				gett1col8.style.cssText = "width:100%;border:none;box-sizing:border-box;text-align:right;color:red;text-align:center;";
@@ -625,7 +1082,7 @@ $(function(){
 			var t1col9 = 'inputa' + j + '_' + 9;
 			var gett1col9 = document.getElementById(t1col9);
 			if(gett1col9.value == ''){
-				gett1col9.value = '0'
+				gett1col9.value = '0';
 			}
 			var t1col10 = 'tablea' + j + '_' + 10;
 			var gett1col10 = document.getElementById(t1col10).innerHTML;
@@ -643,10 +1100,10 @@ $(function(){
 			if(sett1col12.innerHTML == 'NaN'){
 				sett1col12.innerHTML = '0';
 				sett1col12.style.cssText = "color:red;";
-			}
-		}
+			};
+		};
 			GoodsCost();
-	}
+	};
 	
 	function SumWaste(){
 		var table1 = document.getElementById('dataTableInv');
@@ -692,10 +1149,10 @@ $(function(){
 				}else{
 				sett1col14.innerHTML = Lossrate.toFixed(2);
 				sett1col14.style.cssText = 'padding:5px;width:100px;border:1px black solid;box-sizing:border-box;color:black;';
-				}
-			}
-		}
-	}
+				};
+			};
+		};
+	};
 	
 	function GoodsCost(){
 		var table1 = document.getElementById('dataTableInv');
@@ -730,10 +1187,11 @@ $(function(){
 				sett1col15.innerHTML = '0';
 			}else{
 				sett1col15.style.cssText = 'color:black;';
-			}
-		}
-	}
+			};
+		};
+	};
 	
+
 	function FourWeeksGoods(){
 		var Date1 = new Date();
 		Date1.setDate(Date1.getDate() - 6); 
@@ -748,14 +1206,12 @@ $(function(){
 		var Week3 = Date3.getFullYear()+'-'+(Date3.getMonth()+1)+'-'+Date3.getDate();
 		var Week4 = Date4.getFullYear()+'-'+(Date4.getMonth()+1)+'-'+Date4.getDate();
 		
-		//Week4 = '2021-10-06';
-		
 		var tablecontent  = document.getElementById('ebase6_tablecontentInv');
 		var tablefourweeks = document.createElement("table");
 		tablecontent.appendChild(tablefourweeks);
 		tablefourweeks.className = "hidden";
 		tablefourweeks.id = "dataTablefourweeks";
-		$.postJSON("DQube",{actionID:'FourWeeksGoodsSales', Week1:Week1, Week2:Week2, Week3:Week3, Week4:Week4,}, function(jres){
+		$.postJSON("DQube",{actionID:'FourWeeksGoodsSales',Week1:Week1, Week2:Week2, Week3:Week3, Week4:Week4}, function(jres){
 			//DOM型で要素をAppendしていく
 			var theadElem = document.createElement("thead");
 			var trElem = document.createElement("tr");
@@ -799,12 +1255,12 @@ $(function(){
 					tdElem.innerHTML = jres.tblData[j][col];
 					setid = 'tableFW' + j + '_' + i;
 					tdElem.setAttribute('id',setid);
-				}
-			}
+				};
+			};
 			return false;
 		});
 
-	}
+	};
 	
 	function CalGoodsNeed(){
 		tablefourweeks = document.getElementById('dataTablefourweeks');
@@ -827,7 +1283,7 @@ $(function(){
 					Totalsum += x;
 					countdata += 1;
 				}
-			var NeedVal = 	document.getElementById(GetNeedVal);
+				var NeedVal = document.getElementById(GetNeedVal);
 				if(countdata != 0){
 					var avg = Totalsum / countdata;
 					avg = avg * 10;
@@ -835,12 +1291,12 @@ $(function(){
 					y = y / 10;
 				} else{
 					var y = 0;
-				}
+				};
 			NeedVal.innerHTML = y;
-			}
-		}
+			};
+		};
 		
-	}
+	};
 	
 	function CalInvShort(){
 		dataTableInv = document.getElementById('dataTableInv');
@@ -857,10 +1313,10 @@ $(function(){
 				InvShort.innerHTML = x;
 			}else{
 				InvShort.innerHTML = 0;
-			}
+			};
 			
-		}
-	}	
+		};
+	};
 	
 	function CalDaysum(){
 		dataTableInv = document.getElementById('dataTableInv');
@@ -927,5 +1383,94 @@ $(function(){
 			document.getElementById('tablemng5').style.cssText = "color:black;";
 		}
 	}	
+	
+	function StockInsert(){
+		var table1 = document.getElementById('dataTableInv');
+		var rowCount = table1.tBodies[0].rows.length;
+		for(j=0;j<rowCount;j++){
+			var input2 = 'inputa' + j + '_6';
+			var count = document.getElementById(input2).value;
+			var input10 = 'tablea' + j + '_12';
+			var invout = document.getElementById(input10).innerHTML;
+			var sales =  document.getElementById('Revenue').value;
+			if( Number.isInteger((parseInt(count))) == false){
+				alert('在庫数を正しく入れてください');
+				return false;
+			}else if(parseInt(count)< 0){
+				alert('在庫数を正しく入れてください');
+				return false;
+			}else if(parseInt(invout) <0){
+				alert('消費数に負数があるため、もう一度入力を確認ください');
+				return false;
+			}else if(Number.isInteger(parseInt(sales)) == false){
+				alert('売上を正しく入れてください');
+				return false;
+			}
+		};
 		
+		for(j=0;j<rowCount;j++){
+			var input1 = 'tablea' + j + '_0';
+			var input2 = 'inputa' + j + '_6';
+			var input3 = 'inputa' + j + '_7';
+			var input4 = 'inputa' + j + '_8';
+			var input5 = 'inputa' + j + '_9';
+			var input6 = 'tablea' + j + '_13';
+			var input7 = 'tablea' + j + '_14';
+			var input8 = 'tablea' + j + '_17';
+			var input9 = 'tablea' + j + '_16';
+			var input10 = 'tablea' + j + '_12';
+			var input11 = 'tablea' + j + '_15';
+			
+			var id = document.getElementById(input1).innerHTML;
+			var count = document.getElementById(input2).value;
+			var compenval = document.getElementById(input3).value;
+			var compenamt = document.getElementById(input4).value;
+			var wastenum = document.getElementById(input5).value;
+			var wasteamt = document.getElementById(input6).innerHTML;
+			var loss = document.getElementById(input7).innerHTML;
+			var invshort = document.getElementById(input8).innerHTML;
+			var invneed = document.getElementById(input9).innerHTML;
+			var invout = document.getElementById(input10).innerHTML;
+			var cost = document.getElementById(input11).innerHTML;
+			
+			$.postJSON("DQube", { actionID: 'StockCountInsert', id: id, count: count, compenval: compenval, compenamt: compenamt, wastenum: wastenum, wasteamt: wasteamt, loss: loss, invshort:invshort, invneed:invneed, invout:invout, cost:cost}, function(){
+				$("#dataTableInv").trigger("update");
+				return false;
+			});
+			
+		};
+		var sales =  document.getElementById('Revenue').value;
+		var cogs =  document.getElementById('tablemng1').innerHTML;
+		var costmar =  document.getElementById('tablemng2').innerHTML;
+		var twaste =  document.getElementById('tablemng3').innerHTML;
+		var tlossrate =  document.getElementById('tablemng4').innerHTML;
+		var gp =  document.getElementById('tablemng5').innerHTML;
+		$.postJSON("DQube", { actionID: 'DaySaleInsert', sales: sales, cogs: cogs, costmar: costmar, twaste: twaste, tlossrate: tlossrate, gp: gp}, function(){
+				$("#dataTableInv").trigger("update");
+				firstpageStockCount();
+				return false;
+			});
+			
+	};
+	
+	function WorknotdoneCNF(){
+		$.postJSON("DQube", { actionID: 'CountDaySales'}, function(jres){
+			var col = jres.keys[0];
+			var check = jres.tblData[0][col];
+			if(check == 0){
+				Countingstock();
+			}else{
+				alert('今日はすでに記載しました。');
+			}
+		
+			return false;
+		});
+	};
+	
+	function mainReturn(){
+		$('#table_item').css('display', 'none');
+		$('#ebase6_NavButtonGroup').css('display', 'block');		
+		$('.ebase6_mainReturn').css('display', 'none');
+		$('#datafield').empty();
+	};
 });

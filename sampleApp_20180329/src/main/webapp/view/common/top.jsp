@@ -135,5 +135,6 @@
 <script type="text/javascript" src="js/orderexe.js"></script>
 <script type="text/javascript" src="js/checkexe.js"></script>
 <script type="text/javascript" src="js/stockcount.js"></script>
+<script type="text/javascript" src="js/inventorymanagement.js"></script>
 
 </html>

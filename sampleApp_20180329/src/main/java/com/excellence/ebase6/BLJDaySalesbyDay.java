@@ -15,16 +15,20 @@ import com.excellence.dqube.base.JsonMap;
 import com.excellence.dqube.base.PModel;
 import com.excellence.dqube.base.XMLParserAPI;
 
-	public class BLJCountingStock extends BLJsonMap4DB implements IBisinessLogic {
+	public class BLJDaySalesbyDay extends BLJsonMap4DB implements IBisinessLogic {
 
 		@Override
 		public void setModel(IModel model){
 
 			super.setModel(model);
 
-			super.pageTitle = "BLJCountingStock";
+			super.pageTitle = "BLJDaySalesbyDay";
 
-			super.defaultSQL = "select * from Inventory_Count where Date = ?";
+			super.defaultSQL = "select m.MaterialName, InventoryOut,Cost, WasteNum,WasteAmt, LossRate\n"
+					+ "from Inventory_Count inv\n"
+					+ "left join Material_M m\n"
+					+ "on inv.MaterialID = m.MaterialID\n"
+					+ "where Date = ?";
 
 		}
 
@@ -32,7 +36,7 @@ import com.excellence.dqube.base.XMLParserAPI;
 	public boolean innerLogic(){
 		boolean rtnFlg = true; //処理結果
 
-		String ytd = firstParam("ytd");
+		String dateselect = firstParam("dateselect");
 		//格納モデルをインスタンス化
 		outModel = new PModel();
 
@@ -93,7 +97,7 @@ import com.excellence.dqube.base.XMLParserAPI;
 
 		try{
 
-			$pstm.setDate(1, java.sql.Date.valueOf(ytd));
+			$pstm.setDate(1, java.sql.Date.valueOf(dateselect));
 
 			$pstm.execute();
 
@@ -175,4 +179,3 @@ import com.excellence.dqube.base.XMLParserAPI;
 	}
 
 }
-	

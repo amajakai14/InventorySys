@@ -43,9 +43,8 @@ $(function(){
 	});
 
 	//在庫管理画面出力処理キック
-	$('a[id=stockManegement]').click(function(){
-		$('#datafield').empty();
-		document.getElementById("ebase6_submenu").innerHTML="在庫管理";
+	$('a[id=Inventory]').click(function(){
+		$.inventorymanagement();
 	});
 
 	//棚卸作業画面出力処理キック

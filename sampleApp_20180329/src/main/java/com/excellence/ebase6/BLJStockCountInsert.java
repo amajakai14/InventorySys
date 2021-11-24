@@ -15,24 +15,44 @@ import com.excellence.dqube.base.JsonMap;
 import com.excellence.dqube.base.PModel;
 import com.excellence.dqube.base.XMLParserAPI;
 
-	public class BLJCountingStock extends BLJsonMap4DB implements IBisinessLogic {
+/**
+ * 指定したSQLを実行する
+ * SQLを実行し、JsonMapを応答する
+ * @author S.Yoshizawa
+ * @category Logic
+ * @version 1.0
+ * @since 1.0
+ *
+ */
+public class BLJStockCountInsert extends BLJsonMap4DB implements IBisinessLogic {
 
-		@Override
-		public void setModel(IModel model){
+	@Override
+	public void setModel(IModel model){
 
-			super.setModel(model);
+		super.setModel(model);
 
-			super.pageTitle = "BLJCountingStock";
+		super.pageTitle = "BLJStockCountInsert";
 
-			super.defaultSQL = "select * from Inventory_Count where Date = ?";
+		super.defaultSQL = "Insert into Inventory_Count(Date, MaterialID, AsCount, InventoryCompensateValue, InventoryCompensate, WasteNum,  WasteAmt, LossRate, InventoryShort, InventoryNeed, InventoryOut, Cost) values (curdate(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
-		}
+	}
 
 	@Override
 	public boolean innerLogic(){
 		boolean rtnFlg = true; //処理結果
 
-		String ytd = firstParam("ytd");
+		String  id = firstParam("id");
+		String  count = firstParam("count");
+		String  compenval = firstParam("compenval");
+		String  compenamt = firstParam("compenamt");
+		String  wastenum = firstParam("wastenum");
+		String  wasteamt = firstParam("wasteamt");
+		String  loss = firstParam("loss");
+		String  invshort = firstParam("invshort");
+		String  invneed = firstParam("invneed");
+		String  invout = firstParam("invout");
+		String  cost = firstParam("cost");
+		
 		//格納モデルをインスタンス化
 		outModel = new PModel();
 
@@ -93,12 +113,22 @@ import com.excellence.dqube.base.XMLParserAPI;
 
 		try{
 
-			$pstm.setDate(1, java.sql.Date.valueOf(ytd));
+			$pstm.setInt(1,Integer.parseInt(id));
+			$pstm.setInt(2, Integer.parseInt(count));
+			$pstm.setInt(3, Integer.parseInt(compenval));
+			$pstm.setInt(4, Integer.parseInt(compenamt));
+			$pstm.setInt(5, Integer.parseInt(wastenum));
+			$pstm.setInt(6, Integer.parseInt(wasteamt));
+			$pstm.setFloat(7, Float.parseFloat(loss));
+			$pstm.setFloat(8, Float.parseFloat(invshort));
+			$pstm.setFloat(9, Float.parseFloat(invneed));
+			$pstm.setInt(10, Integer.parseInt(invout));
+			$pstm.setInt(11, Integer.parseInt(cost));
 
 			$pstm.execute();
 
 			if($recode == null){
-				//sql="SELECT MaterialID, MaterialName,Unit, UnitCost, ExpPeriod, Supplier, MatRemark from Material_M";
+				//sql="select * from ;";
 				//setSQL(sql);
 
 				if(executeSQL()) {
@@ -175,4 +205,3 @@ import com.excellence.dqube.base.XMLParserAPI;
 	}
 
 }
-	
