@@ -25,26 +25,11 @@ $(function(){
 		});
 	});
 	
-	//日付＆時刻を表示
-	$(document).ready(function test2(){
-		var today = new Date();
-		var hour = today.getHours();
-		if(hour <10){
-			hour = '0'+ hour
-		}
-		var minute = today.getMinutes();
-		if(minute <10){
-			minute = '0' + minute
-		}
-		var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-		var time = hour + ":" + minute;
-		var dateTime = date+' '+time;
-	  	document.getElementById("ebase_time_boxlogin").innerHTML = 'time : ' + dateTime;
-		document.getElementById("ebase_time_boxlogin").style.textAlign = 'right';
-		
-		//setInterval(test2, 1000);
+	//Logout
+	ebase6_logout
+	$('#ebase6_logout').click(function(){
+		$.logout();
 	});
-
 	//ALL menu close
 	function menuClose() {
 		$('#ebase6_shadow').css('display', 'none');
@@ -147,12 +132,20 @@ $(function(){
 		$('#datafield').css('display', 'block');
 		$.stockcount();
 	});	
+		//在庫一覧をクリック
 	$('#ebase6_NavInventory').click(function(){
 		menubarShow();
 		$('#datafield').css('display', 'block');
 		$.inventorymanagement();
 	});	
+		//ユーザー登録をクリック
+	$('#ebase6_NavIDRegister').click(function(){
+		menubarShow();
+		$('#datafield').css('display', 'block');
+		$.userpage();
+	});	
 
+		//SetFooter
 
 
 

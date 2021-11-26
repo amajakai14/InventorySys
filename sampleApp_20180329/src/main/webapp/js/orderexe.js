@@ -900,4 +900,142 @@ $(function() {
 		return false;
 
 	}
+	
+	$.orderexeshortcut = function() {
+		$('.ebase6_mainReturn').hide();
+		$('#ebase6_tablecontentInvmng').hide();
+		$('#dataTableInvmng').hide();
+		$('#tbody_Invmng').hide();
+		$('#InvValText').hide();
+		$('#allInvVal').hide();
+		$('#inputdate').hide();
+		$('#ebase6_invmngText').html("新規発注");
+		$('#ebase6_invmngText').css("background-color","#F5D98B");
+		var field = document.getElementById('datafield');
+		var table = document.getElementById('dataTableInvmng');
+		var rowCount = table.tBodies[0].rows.length;
+		
+		
+		var quickordcontainer = document.createElement("div");
+		field.appendChild(quickordcontainer);
+		quickordcontainer.id = "quickordcontainer";
+		
+		var tablequickord = document.createElement("table");
+		quickordcontainer.appendChild(tablequickord);
+		tablequickord.className = "tablesorter";
+		tablequickord.id = "tablequickord";
+		tablequickord.style.cssText = "position:relative;width:330px;height:10px;text-align:center;";
+		
+		var btn = document.createElement("input");
+		btn.setAttribute('type', "button");	
+		btn.setAttribute('value', "新規確定");
+		btn.setAttribute('id', "ebase6_popup_submit");
+		btn.style.cssText = "position:relative;top:20px;left:5px;width:80px;background-color:#59B7EA;cursor:pointer;border-color:#a9f6f4;"
+		quickordcontainer.appendChild(btn);
+		$('#ebase6_popup_submit').off("click"); //実行ボタンの処理を初期化
+		$('#ebase6_popup_submit').on("click", insertPoQuickData); //実行ボタンの処理変更
+		
+		var btnreturn = document.createElement("input");
+		quickordcontainer.appendChild(btnreturn);
+		btnreturn.setAttribute('type', "button");
+		btnreturn.setAttribute('value', "戻る");
+		btnreturn.setAttribute('id', "ebase6_returnInvmng");
+		$('#ebase6_returnInvmng').off("click");
+		$('#ebase6_returnInvmng').on("click", $.inventorymanagement);
+				
+		var theadElem = document.createElement("thead");
+		var trElem = document.createElement("tr");
+		tablequickord.appendChild(theadElem);
+		theadElem.appendChild(trElem);
+		
+		var thElem = document.createElement("th");
+			trElem.appendChild(thElem);
+			thElem.innerHTML = "食材ID";
+		
+		var thElem = document.createElement("th");
+			trElem.appendChild(thElem);
+			thElem.innerHTML = "食材名";
+			
+		var thElem = document.createElement("th");
+		trElem.appendChild(thElem);
+		thElem.innerHTML = "発注数";
+		
+		var thElem = document.createElement("th");
+		trElem.appendChild(thElem);
+		thElem.innerHTML = "発注備考";
+		
+		var tbodyElem = document.createElement("tbody");
+			tablequickord.appendChild(tbodyElem);
+			//tbodyElem.setAttribute("id", "tbody_Invmng");
+			
+		var k = 0;
+		for(j=0;j<rowCount;j++){
+			var col0 = 'col' + j + 0;
+			var getcol0 = document.getElementById(col0);
+			var col6 = 'col' + j + 6;
+			var getcol6 = document.getElementById(col6);
+			var col7 = 'col' + j + 7;
+			var getcol7 = document.getElementById(col7);
+			if(getcol6.innerHTML != '0.0'){
+				var trElem = document.createElement("tr");
+				tbodyElem.appendChild(trElem);
+				var tdElem = document.createElement("td");
+					trElem.appendChild(tdElem);
+					tdElem.style.background = "#fff";
+					var matid = getcol7.innerHTML;
+					tdElem.innerHTML = matid;
+					tdElem.setAttribute('id', 'input' + k + 0);
+					tdElem.style.cssText = 'padding:8px;width:110px;border:1px black solid;box-sizing:border-box;';
+				var tdElem = document.createElement("td");
+					trElem.appendChild(tdElem);
+					tdElem.style.background = "#fff";
+					var matname = getcol0.innerHTML;
+					tdElem.innerHTML = matname;
+					tdElem.setAttribute('id', 'input' + k + 1);
+					tdElem.style.cssText = 'padding:8px;width:110px;border:1px black solid;box-sizing:border-box;';
+				var tdElem = document.createElement("td");
+					trElem.appendChild(tdElem);
+					tdElem.style.background = "#fff";
+					var ordqua = parseFloat(getcol6.innerHTML);
+					tdElem.innerHTML = Math.ceil(ordqua);
+					tdElem.setAttribute('id', 'input' + k + 2);
+					tdElem.setAttribute('contenteditable', 'true');
+					tdElem.style.cssText = 'padding:8px;width:110px;border:1px black solid;box-sizing:border-box;';
+				var tdElem = document.createElement("td");
+					trElem.appendChild(tdElem);
+					tdElem.style.background = "#fff"
+					text = document.createElement('input');
+					tdElem.appendChild(text);
+					text.setAttribute('value','quickpost');
+					text.setAttribute('spellcheck','false');
+					text.setAttribute('id', 'input' + k + 3);
+					text.style.cssText = 'text-align:center;';
+					k += 1;
+			}
+		}
+	}
+	
+	function insertPoQuickData() {
+		var tablequickord = document.getElementById("tablequickord");
+		var rowCountquickord = tablequickord.tBodies[0].rows.length;
+		var Date1 = new Date();
+		Date1.setDate(Date1.getDate() +1); 
+		var tmr = Date1.getFullYear()+'-'+(Date1.getMonth()+1)+'-'+Date1.getDate();
+		for(k=0;k<rowCountquickord;k++){
+			var getval1 = 'input' + k + 0;
+			var getval2 = 'input' + k + 2;
+			var getval4 = 'input' + k + 3;
+			var id = document.getElementById(getval1).innerHTML; 
+			var ord = document.getElementById(getval2).innerHTML; 
+			var scheduled = tmr; 
+			var poremark = document.getElementById(getval4).value; 
+			$.ajaxSetup({ async: false }); //同期
+			$.postJSON("DQube", { actionID: 'PoInsert', id: id, ord: ord, scheduled: scheduled, poremark: poremark }, function() {
+			return false;
+			});
+			$.ajaxSetup({ async: true }); //同期
+		}
+			firstpageOrder();
+	};
+
 });

@@ -33,7 +33,7 @@ public class BLJStockCountInsert extends BLJsonMap4DB implements IBisinessLogic 
 
 		super.pageTitle = "BLJStockCountInsert";
 
-		super.defaultSQL = "Insert into Inventory_Count(Date, MaterialID, AsCount, InventoryCompensateValue, InventoryCompensate, WasteNum,  WasteAmt, LossRate, InventoryShort, InventoryNeed, InventoryOut, Cost) values (curdate(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		super.defaultSQL = "Insert into Inventory_Count(Date, MaterialID, AsCount, InventoryCompensateValue, InventoryCompensate, WasteNum,  WasteAmt, LossRate, InventoryShort, InventoryNeed, InventoryOut, Cost, AsCountVal) values (curdate(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 	}
 
@@ -52,6 +52,7 @@ public class BLJStockCountInsert extends BLJsonMap4DB implements IBisinessLogic 
 		String  invneed = firstParam("invneed");
 		String  invout = firstParam("invout");
 		String  cost = firstParam("cost");
+		String  ascountval = firstParam("ascountval");
 		
 		//格納モデルをインスタンス化
 		outModel = new PModel();
@@ -124,6 +125,7 @@ public class BLJStockCountInsert extends BLJsonMap4DB implements IBisinessLogic 
 			$pstm.setFloat(9, Float.parseFloat(invneed));
 			$pstm.setInt(10, Integer.parseInt(invout));
 			$pstm.setInt(11, Integer.parseInt(cost));
+			$pstm.setInt(12, Integer.parseInt(ascountval));
 
 			$pstm.execute();
 

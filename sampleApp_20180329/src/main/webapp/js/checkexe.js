@@ -31,7 +31,7 @@ $(function(){
 		var matHeadText = document.createElement("div");
 		matHeadText.id = "ebase6_CheckHeadText";
 		matHead.appendChild(matHeadText);
-		$('#ebase6_CheckHeadText').html("検品")
+		$('#ebase6_CheckHeadText').html("検品");
 
 		InspectRegis();
 
@@ -356,6 +356,7 @@ $(function(){
 				input3ID.style.cssText = 'padding:5px;width:100px;border:1px black solid;box-sizing:border-box;color: red;';
 			} else{
 				input3ID.innerHTML = x;
+				input3ID.style.cssText = 'padding:5px;width:100px;border:1px black solid;box-sizing:border-box;color: black;';
 			}
 		}
 	}

@@ -33,7 +33,7 @@ public class BLJAddWorkEnya20180322 extends BLJsonMap4DB implements IBisinessLog
 
 		super.pageTitle = "BLJAddWorkEnya20180322";
 
-		super.defaultSQL = "INSERT INTO SAMPLETBL VALUES (?, ?)";
+		super.defaultSQL = "INSERT INTO Employee_M (EmpName, Password) VALUES (?, ?)";
 
 	}
 
@@ -41,8 +41,8 @@ public class BLJAddWorkEnya20180322 extends BLJsonMap4DB implements IBisinessLog
 	public boolean innerLogic(){
 		boolean rtnFlg = true; //処理結果
 
-		String id = firstParam("id");
-		String value = firstParam("value");
+		String name = firstParam("name");
+		String pw = firstParam("pw");
 		//格納モデルをインスタンス化
 		outModel = new PModel();
 
@@ -103,13 +103,13 @@ public class BLJAddWorkEnya20180322 extends BLJsonMap4DB implements IBisinessLog
 
 		try{
 
-			$pstm.setInt(1, Integer.parseInt(id));
-			$pstm.setString(2, value);
+			$pstm.setString(1, name);
+			$pstm.setString(2, pw);
 
 			$pstm.execute();
 
 			if($recode == null){
-				sql="select * from SAMPLETBL;";
+				sql="SELECT EmpID, EmpName FROM Employee_M;";
 				setSQL(sql);
 
 				if(executeSQL()) {

@@ -1433,7 +1433,13 @@ $(function(){
 			var invout = document.getElementById(input10).innerHTML;
 			var cost = document.getElementById(input11).innerHTML;
 			
-			$.postJSON("DQube", { actionID: 'StockCountInsert', id: id, count: count, compenval: compenval, compenamt: compenamt, wastenum: wastenum, wasteamt: wasteamt, loss: loss, invshort:invshort, invneed:invneed, invout:invout, cost:cost}, function(){
+			//additional
+			var x = 'tablea' + j + '_3';
+			var unitcost = document.getElementById(x).innerHTML;
+			var ascountval = parseInt(count) * parseInt(unitcost);
+			
+			
+			$.postJSON("DQube", { actionID: 'StockCountInsert', id: id, count: count, compenval: compenval, compenamt: compenamt, wastenum: wastenum, wasteamt: wasteamt, loss: loss, invshort:invshort, invneed:invneed, invout:invout, cost:cost, ascountval:ascountval}, function(){
 				$("#dataTableInv").trigger("update");
 				return false;
 			});
@@ -1466,6 +1472,7 @@ $(function(){
 			return false;
 		});
 	};
+	
 	
 	function mainReturn(){
 		$('#table_item').css('display', 'none');

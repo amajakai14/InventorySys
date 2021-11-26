@@ -52,6 +52,17 @@
 		<loglevel>TRACE</loglevel>
 		<logonignore>true</logonignore>
 	</QUBE>
+	<QUBE id="ADDWORK03">
+		<logic>com.excellence.dqube.base.NullLogic</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+	</QUBE>
+	<QUBE id="EmployeeList">
+		<logic>com.excellence.ebase6.BLJEmployeeList</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>
 	<QUBE id="CountingStock">
 		<logic>com.excellence.ebase6.BLJCountingStock</logic>
 		<urls>JSON</urls>
@@ -186,6 +197,12 @@
 	</QUBE>
 	<QUBE id="PoSelect">
 		<logic>com.excellence.ebase6.BLJPoSelect</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>
+	<QUBE id="PoSelectbyDate">
+		<logic>com.excellence.ebase6.BLJPoSelectbyDate</logic>
 		<urls>JSON</urls>
 		<loglevel>TRACE</loglevel>
 		<logonignore>true</logonignore>

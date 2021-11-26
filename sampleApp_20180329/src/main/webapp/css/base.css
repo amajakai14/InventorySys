@@ -21,8 +21,9 @@ a:active { text-decoration: none; color: #0050ff;border-bottom-color:#0050ff; }
 /* メインメニュー */
 body{
 	margin: 0px 0px 0px 0px;
-	;
+	min-height:100%;
 }
+
 #ebase6_mainmenu {
 	background-color : #aaf;
 	font-size : 32px;
@@ -136,15 +137,31 @@ table td th {
 /* ボディ部 */
 #ebase6_body {
 	position:fixed;
-	bottom:0px;
+	bottom:25px;
 	top:48px;
   	width: 100%;
-  	max-height:88%;
+  	max-height:95%;
   	margin:0px 0px 0px 0px;
   	overflow:auto;
 	background: radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(83,213,209,1) 22%, rgba(229,240,239,0.19698301683954833) 35%, rgba(151,222,218,0.9196720924698004) 51%);
   	
- 
+}
+#ebase6_footer{
+	box-sizing:border-box;
+	position:fixed;
+	bottom:0px;
+	padding:2px;
+  	width: 100%;
+  	margin:0px 0px 0px 0px;
+  	overflow:auto;
+	background-color:lightgrey;
+	height:25px;
+	font-size:0.7em;
+	font-weight:bold;
+}
+#footcontainer{
+	position:absolute;
+	right:5px;
 }
 
 .grid-container{
@@ -243,6 +260,7 @@ table td th {
 	position: absolute;
 	bottom : 0;
 }
+
 
 /* 画面フィルタ */
 #ebase6_shadow {
@@ -374,7 +392,10 @@ table td th {
 		width:100px;
 	padding:4px;
 	border: 1px solid black;
-	
+}
+#dataTableuser > thead > tr > th{
+	padding:4px;
+	border: 1px solid black;
 	
 }
 /* Table style Inventory*/
@@ -387,7 +408,7 @@ table td th {
 	
 }
 /* Table style InventoryManage*/
- #dataTableMng > thead > tr > th{
+ #dataTableMng > thead > tr > th,#tablequickord > thead > tr > th, #tablequickord > tr > td{
 	min-width:100px;
 	width:100px;
 	padding:4px;
@@ -414,6 +435,17 @@ table td th {
 	font-size :10px;
 	display: none;
 	cursor:pointer;
+}
+
+#ebase6_returnInvmng{
+	background-color : #c0c0c0;
+	text-align : center;
+	position :relative;
+	top:70px;
+	left:85%;	
+	border:1px solid black;
+	cursor:pointer;
+	width:70px;
 }
 #ebase6_mainReturnID{
 	background-color : #f1b51d;
@@ -520,6 +552,17 @@ table td th {
 	display:flex;
 	margin:15px 0px 15px 0px;
 }
+/* ユーザ管理の見出し */
+#ebase6_userHeadText{
+	position:relative;
+	top:30px;
+	width:200px;
+	background-color: lightgrey;
+	text-align : center;
+	border : 1px solid black;
+	padding : 3px;
+	box-sizing: border-box;
+}
 #ebase6_invmngText{
 	position:relative;
 	width:200px;
@@ -615,28 +658,58 @@ table td {
 #Daysalebox:hover{
 	background-color: #3e8e41;
 }
+#createuserContainer{
+	position:absolute;
+	top: 150px;
+}
+#dataTableuser{
+	position:absolute;
+	top:0px;
+	left:400px;
+	width:280px;
+	box-sizing:border-box;
+	border-collapse: collapse;
+}
+input::-ms-reveal,
+      input::-ms-clear {
+        display: none;
+      }
+
 @media only screen and (max-width: 1200px) {
   #ebase6_tablecontent, #ebase6_tablecontentOrd {position:absolute;left:30px;} 
   #ebase6_tablecontentInv {position:absolute;top:230px;left:30px;}  
+  #ebase6_tablecontentInvmng {position:absolute;left:calc(50% - 394px);}
+  #InvValBox {position:absolute;top:480px;left:calc(50% - 45px);}
   #ebase6_tablecontentmng{position:absolute;left:calc(50% - 300px);top:135px}
   #Daysalebox{position:absolute;top:80px;left:75%;width:150px;}
   #button_InvCnf{position:absolute;top:165px;left:950px;background-color:#59B7EA;cursor:pointer;}
   #ebase6_tablecontentmain{position:absolute;left:calc(50% - 295px);top:135px}
   #ebase6_tablecontentdetail{position:absolute;left:calc(50% - 308px);top:230px}
+  #inputdate{position:absolute;margin-left:20px;border:black;box-sizing:border-box;top:50px;}
+  #quickordcontainer{position:absolute;left:calc(50% - 250px);}
+  #createuserContainer {position:absolute;left:calc(50% - 340px);} 
 }
 
 @media only screen and (min-width: 1201px) {
   #ebase6_tablecontent {position:absolute;left:calc(50% - 563px);}
   #ebase6_tablecontentOrd {position:absolute;left:calc(50% - 563px);}
+  #ebase6_tablecontentInvmng {position:absolute;left:calc(50% - 394px);}
+  #InvValBox {position:absolute;top:480px;left:calc(50% - 45px);}
   #ebase6_tablecontentInv {position:absolute;top:230px;left:calc(50% - 499px);}
   #ebase6_tablecontentmng{position:absolute;left:calc(50% - 300px);top:135px} 
   #Daysalebox{position:absolute;top:80px;left:75%;width:150px;}
   #button_InvCnf{position:absolute;top:165px;left:1054px;background-color:#59B7EA;cursor:pointer;}
   #ebase6_tablecontentmain{position:absolute;left:calc(50% - 295px);top:135px}
   #ebase6_tablecontentdetail{position:absolute;left:calc(50% - 308px);top:230px}
+  #inputdate{position:absolute;margin-left:20px;border:black;box-sizing:border-box;}
+  #quickordcontainer{position:absolute;left:calc(50% - 250px);}
+  #createuserContainer {position:absolute;left:calc(50% - 340px);} 
 }
 
 @media only screen and (max-width: 726px){
 	#Daysalebox{position:absolute;top:80px;left:500px;width:150px;}
 	#ebase6_tablecontentmng{position:absolute;left:30px;top:135px} 
+	#ebase6_tablecontentInvmng {position:absolute;left:30px;}
+	#InvValBox {position:absolute;top:480px;left:595px;}
+	.ebase6_mainReturn{left:650px;top:530px;};
 }

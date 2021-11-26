@@ -15,19 +15,16 @@ import com.excellence.dqube.base.JsonMap;
 import com.excellence.dqube.base.PModel;
 import com.excellence.dqube.base.XMLParserAPI;
 
-	public class BLJInventoryManagement extends BLJsonMap4DB implements IBisinessLogic {
+	public class BLJPoSelectbyDate extends BLJsonMap4DB implements IBisinessLogic {
 
 		@Override
 		public void setModel(IModel model){
 
 			super.setModel(model);
 
-			super.pageTitle = "InventoryManagement";
+			super.pageTitle = "BLJPoSelectbyDate";
 
-			super.defaultSQL = "select m.MaterialName, inv.AsCount, m.UnitCost, m.Unit,inv.AsCountVal, inv.InventoryNeed, inv.InventoryShort, m.MaterialID \n"
-					+ "From Material_M m\n"
-					+ "Inner Join Inventory_Count inv on inv.MaterialID = m. MaterialID\n"
-					+ "Where Date =  ?;";
+			super.defaultSQL = "select count(*) from PurchaseOrder_T where DeliverDate = ?";
 
 		}
 
@@ -35,8 +32,7 @@ import com.excellence.dqube.base.XMLParserAPI;
 	public boolean innerLogic(){
 		boolean rtnFlg = true; //処理結果
 
-		String date = firstParam("date");
-		
+		String tmr = firstParam("tmr");
 		//格納モデルをインスタンス化
 		outModel = new PModel();
 
@@ -97,16 +93,13 @@ import com.excellence.dqube.base.XMLParserAPI;
 
 		try{
 
-			$pstm.setDate(1, java.sql.Date.valueOf(date));
+			$pstm.setDate(1, java.sql.Date.valueOf(tmr));
 
 			$pstm.execute();
 
 			if($recode == null){
-				/*
-				 * sql="Select inv.MaterialID, m.MaterialName, AsCount, Date\n" +
-				 * "From Inventory_Count inv\n" + "LEFT JOIN Material_M m\n" +
-				 * "on inv.MaterialID = m.MaterialID;\n"; setSQL(sql);
-				 */
+				//sql="SELECT MaterialID, MaterialName,Unit, UnitCost, ExpPeriod, Supplier, MatRemark from Material_M";
+				//setSQL(sql);
 
 				if(executeSQL()) {
 					//参照系処理

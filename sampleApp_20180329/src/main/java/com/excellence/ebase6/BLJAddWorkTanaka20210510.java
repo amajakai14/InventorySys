@@ -34,7 +34,7 @@ public class BLJAddWorkTanaka20210510 extends BLJsonMap4DB implements IBisinessL
 
 		super.pageTitle = "BLJAddWorkTanaka20210510";
 
-		super.defaultSQL = "SELECT * FROM user_table WHERE username = ? && password = ?";
+		super.defaultSQL = "SELECT * FROM Employee_M WHERE EmpName = ? && Password = ?";
 
 	}
 

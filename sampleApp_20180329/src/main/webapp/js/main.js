@@ -57,6 +57,14 @@ $(function(){
 		$('#datafield').empty();
 		document.getElementById("ebase6_submenu").innerHTML="履歴表示";
 	});
+	
+	//在庫管理画面出力処理キック
+	$('a[id=mainmenu]').click(function(){
+		$('#table_item').css('display', 'none');
+		$('#ebase6_NavButtonGroup').css('display', 'block');		
+		$('.ebase6_mainReturn').css('display', 'none');
+		$('#datafield').empty();
+	});
 
 
 	
