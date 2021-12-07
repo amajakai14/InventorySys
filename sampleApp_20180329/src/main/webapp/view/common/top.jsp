@@ -24,24 +24,7 @@
 
 		
 		<input type="text" id="ebase_time_boxmain">
-		<script>
-		function doDate(){
-			var today = new Date();
-			var hour = today.getHours();
-			if(hour <10){
-				hour = '0'+ hour
-			}
-			var minute = today.getMinutes();
-			if(minute <10){
-				minute = '0' + minute
-			}
-			var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-			var time = hour + ":" + minute;
-			var dateTime = date+' '+time;
-	 		 document.getElementById("ebase_time_boxmain").value = dateTime;
-		}
-		setInterval(doDate, 1000);
-		</script>
+		
 		<button id="ebase6_logout" type="button">ログアウト</button>
 					<!-- Control Menu  //-->
 					
@@ -57,7 +40,7 @@
 		<!-- レイアウトは良い感じに直して -->
 		<table id = "table_item">
 		<tr>
-		<td style="background-color:#C0C0C0"><a id="mainmenu" href="javascript:void(0)">メニュー</a></td>
+		<td style="background-color:#C0C0C0"><a id="mainmenu" href="javascript:void(0)">メイン</a></td>
 		<td style="background-color:#38F088"><a id="goodsView" href="javascript:void(0)">食材リスト </a></td>
 		<td style="background-color:#F5D98B"><a id="PurchaseOrder" href="javascript:void(0)">発注 </a></td>
 		<td style="background-color:#f5ff45 "><a id="goodsInspt" href="javascript:void(0)">検品 </a></td>
@@ -96,7 +79,7 @@
 		</div>
  			<div id="datafield"></div>
  	<div>
-	<button class ="ebase6_mainReturn" type="button">Mainに戻る </button>
+	<button class ="ebase6_mainReturn" type="button">メインに戻る </button>
 	</div>		
 	</div>
 		

@@ -117,6 +117,12 @@
 		<loglevel>TRACE</loglevel>
 		<logonignore>true</logonignore>
 	</QUBE>
+	<QUBE id="CheckDuplicateOrder">
+		<logic>com.excellence.ebase6.BLJCheckDuplicateOrder</logic>
+		<urls>JSON</urls>
+		<loglevel>TRACE</loglevel>
+		<logonignore>true</logonignore>
+	</QUBE>
 	<QUBE id="SupplyData">
 		<logic>com.excellence.ebase6.BLJSupplyData</logic>
 		<urls>JSON</urls>

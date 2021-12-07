@@ -12,11 +12,12 @@ $(function(){
 		$('#ebase6_matHead').remove();
 		$('#dataTableInv').remove();
 		$('#tbody_stock').remove();
+		$('#userscreen').html('棚卸 | ');
 		var field = document.getElementById("datafield");
 		btnreturn = document.createElement('input');
 		field.appendChild(btnreturn);
 		btnreturn.setAttribute('type','button');
-		btnreturn.setAttribute('value','Mainに戻る');
+		btnreturn.setAttribute('value','メインに戻る');
 		btnreturn.id = 'ebase6_mainReturnID';
 		btnreturn.style.cssText = "position:absolute;top:700px;left:600px;display:block;";
 		$('#ebase6_mainReturnID').off("click");
@@ -37,7 +38,7 @@ $(function(){
 		selectdate.setAttribute('type','date');
 		selectdate.setAttribute('id','inputdate');
 		var today = new Date();
-		var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+		var date = today.getFullYear()+'-'+("0" + (today.getMonth() + 1)).slice(-2)+'-'+("0" + today.getDate()).slice(-2)
 		selectdate.setAttribute('value',date);
 		selectdate.style.cssText = "margin-left:20px;border:black;box-sizing:border-box;";
 		
@@ -530,6 +531,9 @@ $(function(){
 		var Daysalevalue = document.createElement('input');
 		Daysalevalue.id = "Revenue";
 		Daysalebox.appendChild(Daysalevalue);
+		Daysalevalue.setAttribute('type', 'number');
+		Daysalevalue.setAttribute("maxlength", "11");
+		Daysalevalue.setAttribute("oninput","javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);");
 		Daysalevalue.style.cssText = 'width:100px;box-sizing:border-box;';
 		Daysalevalue.onchange = function(){
 			CalDaysum();
@@ -648,7 +652,7 @@ $(function(){
 					var col = jres.keys[i];
 					var thElem = document.createElement("th");
 					trElem.appendChild(thElem);
-					thElem.innerHTML= "消費期間(日)";
+					thElem.innerHTML= "消費期間";
 				} 
 			}
 			//5
@@ -773,9 +777,13 @@ $(function(){
 						var input = document.createElement("input");
 						tdElem.appendChild(input);
 						input.setAttribute('value', "");
+						input.setAttribute('maxlength', "11");
+						input.setAttribute('type', 'number');
+						input.setAttribute("oninput","javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);");
 						input.style.cssText = "width:100%;border:none;box-sizing:border-box;text-align:right;color:blue;text-align:center;";
 						var inputid = 'inputa' + j + '_' + i;
 						input.setAttribute('id', inputid);
+						
 					};
 				};
 			};
@@ -1310,6 +1318,9 @@ $(function(){
 			var InvShort = document.getElementById(GetInvShort);
 			var x = parseFloat(InvNeed) -  parseInt(CurInv);
 			if(x > 0){
+				roundx = x * 10;
+				z = Math.round(roundx);
+				x = z /10;
 				InvShort.innerHTML = x;
 			}else{
 				InvShort.innerHTML = 0;

@@ -25,8 +25,9 @@ $(function(){
 		});
 	});
 	
+	
+	
 	//Logout
-	ebase6_logout
 	$('#ebase6_logout').click(function(){
 		$.logout();
 	});
@@ -96,6 +97,7 @@ $(function(){
 		$('#ebase6_NavButtonGroup').css('display', 'block');		
 		$('.ebase6_mainReturn').css('display', 'none');
 		$('#datafield').empty();
+		$('#userscreen').html('メイン | ');
 	};
 		//Mainボタンをクリック
 		$('.ebase6_mainReturn').click(function(){
@@ -144,8 +146,37 @@ $(function(){
 		$('#datafield').css('display', 'block');
 		$.userpage();
 	});	
-
-		//SetFooter
+	
+		$(document).ready(function(){
+			doDate();
+			setInterval(doDate, 1000);
+		});
+	
+		function doDate(){
+			var today = new Date();
+			var hour = today.getHours();
+     		var day = today.getDate();
+     		var month = today.getMonth()+1;
+      		if(month <10){
+				month = '0'+ month;
+			}
+			if(day <10){
+				day = '0'+ day;
+			}
+    		  if(hour <10){
+				hour = '0'+ hour
+			}
+			var minute = today.getMinutes();
+			if(minute <10){
+				minute = '0' + minute
+			}
+			var date = today.getFullYear()+'/'+month+'/'+day;
+			var time = hour + ":" + minute;
+			var dateTime = date+' '+time;
+	 		 document.getElementById("ebase_time_boxmain").value = dateTime;
+		}
+		
+		
 
 
 

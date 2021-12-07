@@ -4,6 +4,7 @@
 $(function(){
 	$.inventorymanagement = function (){
 		$('#datafield').empty();
+		$('#userscreen').html('在庫一覧 | ');
 		$('.ebase6_mainReturn').css('display', 'block');
 		var field = document.getElementById("datafield");
 
@@ -23,7 +24,7 @@ $(function(){
 		selectdate.setAttribute('type','date');
 		selectdate.setAttribute('id','inputdate');
 		var today = new Date();
-		var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+		var date = today.getFullYear()+'-'+("0" + (today.getMonth() + 1)).slice(-2)+'-'+("0" + today.getDate()).slice(-2)
 		selectdate.setAttribute('value',date);
 		selectdate.style.cssText = "position:absolute;margin-left:20px;border:black;box-sizing:border-box;";
 		var tablecontent = document.createElement("div");
@@ -41,14 +42,17 @@ $(function(){
 		
 		//$.ajaxSetup({ async: false }); //同期
 		$.postJSON("DQube", { actionID: 'PoSelectbyDate', tmr:tmr }, function(jres) {
+			var checkInsuff = InsuffSum();
 			var col = jres.keys[0];
 			var dataCount = jres.tblData[0][col];
-			if(dataCount == 0){
+			if(checkInsuff == 0){
+				return false;
+			} else if (dataCount == 0){
 			//食材修正ボタン作成
 			var btnh = document.createElement("input");
 			tablecontent.appendChild(btnh);
 			btnh.setAttribute('type', "button");
-			btnh.setAttribute('value', "新規発注へ");
+			btnh.setAttribute('value', "新規発注へ")	;
 			btnh.setAttribute('id', "PoEdit");
 			btnh.style.cssText = 'font-size:.6em;padding:5px;background-color:#F5D98B;position:absolute;left:685px;top:-40px;cursor:pointer;width:100px;';
 			$('#PoEdit').off("click");
@@ -126,6 +130,9 @@ $(function(){
 					trElem.appendChild(tdElem);
 					tdElem.style.background = "FC2604";
 					tdElem.style.cssText = 'padding:5px;width:110px;border:1px black solid;box-sizing:border-box;height:26px;';
+					if( i == 7){
+						tdElem.setAttribute('class', 'Idcol');
+					}
 				}
 			}
 
@@ -156,8 +163,10 @@ $(function(){
 
 			//背景色の高さはデータ量による
 			var x = table.tBodies[0].rows.length;
-			var hadjust = 26+30*x;
+			var hadjust = 30+30*x;
 			table.style.cssText = "position:absolute;width:788px;height:"+hadjust+"px;max-height:380px;";
+			
+			
 			
 			
 			$("#dataTableInvmng").tablesorter({
@@ -340,6 +349,23 @@ $(function(){
 	}
 	function toOrder(){
 		$.orderexeshortcut();
+	}
+	
+	function InsuffSum(){
+		var table = document.getElementById('dataTableInvmng');
+		var rowCount = table.tBodies[0].rows.length;
+		var sum = 0;
+		for(j=0;j<rowCount;j++){
+			var col6 = 'col' + j + 6; 
+			try{
+			var getcol6 = document.getElementById(col6).innerHTML;
+			sum += parseInt(getcol6);
+			}
+			catch(err){
+				return false;
+			}		
+		}
+		return sum;
 	}
 	
 });

@@ -64,6 +64,7 @@ $(function(){
 		$('#ebase6_NavButtonGroup').css('display', 'block');		
 		$('.ebase6_mainReturn').css('display', 'none');
 		$('#datafield').empty();
+		$('#userscreen').html('メイン | ');
 	});
 
 

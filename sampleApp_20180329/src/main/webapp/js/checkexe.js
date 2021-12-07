@@ -20,7 +20,7 @@ $(function(){
 	//品物検品画面表示
 	$.checkexe = function (){
 		$('#datafield').empty();
-		
+		$('#userscreen').html('検品 | ');
 		var field = document.getElementById("datafield");
 
 		var matHead = document.createElement("div");
@@ -96,8 +96,8 @@ $(function(){
 		
 		var tablecontent = document.createElement('div');
 			field.appendChild(tablecontent);
-			tablecontent.id = "ebase6_tablecontent";
-			tablecontent.style.cssText = "position:absolute;left:calc(50% - 450px);";
+			tablecontent.id = "ebase6_tablecontentnewInspect";
+			//tablecontent.style.cssText = "position:absolute;left:calc(50% - 450px);";
 		
 		var table = document.createElement("table");
 			tablecontent.appendChild(table);
@@ -246,7 +246,7 @@ $(function(){
 							tdElem.innerHTML = "";
 							tdElem.setAttribute('id', "input_" + j + i);
 							tdElem.style.cssText = "box-sizing:border-box;font-size:8pt;text-align:right;font-weight:bold;color:blue;";
-						} else{
+						}  else{
 							var tdElem = document.createElement("td");
 							trElem.appendChild(tdElem);
 							tdElem.style.background = "#fff";
@@ -254,7 +254,9 @@ $(function(){
 							tdElem.appendChild(input);
 							input.setAttribute('id', "input_" + j + i);
 							input.style.cssText = "width:100%;border:none;box-sizing:border-box;font-size:8pt;text-align:right;font-weight:bold;color:blue;";
-							
+							if( i == 7|| i == 8){
+								input.setAttribute('type', "number");
+							}
 						}
 
 					}
@@ -267,6 +269,7 @@ $(function(){
 				headers: { 0: { sorter: false } }
 
 				});
+			
 
 				$("#dataTable").trigger("update");
 	
@@ -288,6 +291,7 @@ $(function(){
 				AutoCheckGoods();
 			}
 		}
+		
 		//新規登録ボタン作成
 		var btns = document.createElement("input");
 		tablecontent.appendChild(btns);
@@ -297,7 +301,6 @@ $(function(){
 		btns.style.cssText = 'font-size:1em;padding: 5px;background-color: green;position:relative;left:5px;top:10px;cursor:pointer;'
 		$('#checkRe').off("click");
 		$('#checkRe').on("click", checkRegister);
-
 	}
 	//消費期限の計算
 	function calExpDate(){
@@ -348,6 +351,7 @@ $(function(){
 		var fail = (input2ID.value);
 		if(fail == ''){
 			fail = 0;
+			input2ID.value = fail;
 		}
 		//検品不足の計算
 		x = total - parseInt(pass) + parseInt(fail);
@@ -500,6 +504,11 @@ $(function(){
 					var tdElem = document.createElement("td");
 					trElem.appendChild(tdElem);
 					tdElem.style.background = "FC2604";
+					tdElem.style.cssText = 'height:16px;';
+						tdElem.setAttribute('id', i+1);
+						if(i == 0){
+								tdElem.setAttribute("class","Idcol");
+						}
 				}
 			}
 
@@ -534,7 +543,7 @@ $(function(){
 			}
 			//背景色の高さはデータ量による
 			var x = table.tBodies[0].rows.length;
-			var hadjust = 10+30*x;
+			var hadjust = 32+28*x;
 			table.style.cssText = "position:absolute;width:1125px;height:"+hadjust+"px;max-height:380px;"
 			
 			$("#dataTable").tablesorter({
@@ -543,6 +552,21 @@ $(function(){
 				headers: { 0: { sorter: false } }
 
 			});
+			
+			var btnh = document.createElement("input");
+			tablecontent.appendChild(btnh);
+			btnh.setAttribute('type', "button");
+			btnh.setAttribute('value', "検品修正");
+			btnh.setAttribute('id', "CheckEdit");
+			btnh.style.cssText = 'font-size:1em;padding:5px;background-color: orange;position:absolute;left:5px;top:400px;cursor:pointer;'
+			$('#CheckEdit').off("click");
+			$('#CheckEdit').on("click", selectInsptlist);
+			
+			if($('#2').html() == ''){
+				$('#CheckEdit').hide();
+			} else{
+				$('#CheckEdit').show();
+			}
 
 			$("#dataTable").trigger("update");
 			//$.ajaxSetup({ async: true }); //同期の解除
@@ -550,14 +574,7 @@ $(function(){
 		});
 
 		
-		var btnh = document.createElement("input");
-		tablecontent.appendChild(btnh);
-		btnh.setAttribute('type', "button");
-		btnh.setAttribute('value', "検品修正");
-		btnh.setAttribute('id', "CheckEdit");
-		btnh.style.cssText = 'font-size:1em;padding:5px;background-color: orange;position:absolute;left:5px;top:400px;cursor:pointer;'
-		$('#CheckEdit').off("click");
-		$('#CheckEdit').on("click", selectInsptlist);
+		
 	}
 	
 	function selectInsptlist(){
@@ -734,7 +751,10 @@ $(function(){
 						tdElem.style.cssText = 'padding:5px;width:110px;border:1px black solid;box-sizing:border-box;';	
 						var input = document.createElement("input");
 						tdElem.appendChild(input);
+						input.setAttribute('maxlength', '11');
 						input.setAttribute('value', x);
+						input.setAttribute("oninput","javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);");
+						input.setAttribute('type', 'number');
 						input.style.cssText = "width:100%;border:none;box-sizing:border-box;text-align:right;color:blue;text-align:center;";
 						var inpu = "inputch_" + k + i;
 						input.setAttribute('id', inpu);

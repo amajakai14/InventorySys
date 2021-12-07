@@ -25,7 +25,7 @@ table.tablesorter tbody td {
 	vertical-align: top;
 }
 table.tablesorter tbody tr.odd td {
-	background-color:#F0F0F6;
+	background-color:#FFF;
 }
 table.tablesorter thead tr .headerSortUp {
 	background-image: url(asc.gif);

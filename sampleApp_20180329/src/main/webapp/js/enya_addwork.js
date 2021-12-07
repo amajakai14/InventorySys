@@ -8,10 +8,12 @@
 $(function(){
 	$.userpage = function(){
 		$('.ebase6_mainReturn').css('display', 'block');
-		var userid = document.getElementById('ebase6_userid');
+		/*var userid = document.getElementById('ebase6_userid');
 		var curscreen = document.createElement('span');
 		userid.prepend(curscreen);
 		curscreen.innerHTML = 'ユーザ管理 | ';
+		curscreen.id = 'userscreen';*/
+		$('#userscreen').html('ユーザー登録 | ');
 		
 		$('#datafield').empty();
 		var field = document.getElementById('datafield');
@@ -26,7 +28,7 @@ $(function(){
 		var HeadText = document.createElement("div");
 		HeadText.id = "ebase6_userHeadText";
 		Head.appendChild(HeadText);
-		$('#ebase6_userHeadText').html("ユーザー管理");
+		$('#ebase6_userHeadText').html("ユーザー登録");
 		
 		var nametag = document.createElement('div');
 		createuserContainer.appendChild(nametag);
@@ -38,7 +40,8 @@ $(function(){
 		var input_name = document.createElement('input');
 		nametag.appendChild(input_name);
 		input_name.setAttribute('id','input_name');
-		input_name.style.cssText = 'margin-left:85px;';
+		input_name.setAttribute('maxlength','50');
+		input_name.style.cssText = 'margin-left:70px;';
 		$("#input_name").attr("spellcheck", "false");
 		
 		var linebreak = document.createElement('br');
@@ -46,7 +49,7 @@ $(function(){
 		
 		var pwtag = document.createElement('div');
 		createuserContainer.appendChild(pwtag);
-		pwtag.innerHTML = 'パースワード';
+		pwtag.innerHTML = 'パスワード';
 		
 		var input_pw = document.createElement('input');
 		pwtag.appendChild(input_pw);
@@ -60,7 +63,7 @@ $(function(){
 		
 		var pwtag2 = document.createElement('div');
 		createuserContainer.appendChild(pwtag2);
-		pwtag2.innerHTML = 'パースワード再入力';
+		pwtag2.innerHTML = 'パスワード再入力';
 		
 		var input_pw2 = document.createElement('input');
 		pwtag2.appendChild(input_pw2);
@@ -75,14 +78,14 @@ $(function(){
 		checkpw.innerHTML = '&nbsp';
 		input_pw2.onkeyup = function(){
 			if(input_pw.value != input_pw2.value){
-				checkpw.innerHTML = 'パースワードが間違っているようです。もう一度入力してください';
+				checkpw.innerHTML = 'パスワードが間違っているようです。もう一度入力してください';
 			} else{
 				checkpw.innerHTML = '&nbsp';
 			}			
 		}
 		input_pw.onchange = function(){
 			if(input_pw.value != input_pw2.value){
-				checkpw.innerHTML = 'パースワードが間違っているようです。もう一度入力してください';
+				checkpw.innerHTML = 'パスワードが間違っているようです。もう一度入力してください';
 			} else{
 				checkpw.innerHTML = '&nbsp';
 				
@@ -188,13 +191,13 @@ $(function(){
 			}
 		}
 		if( pw != pw2){
-			alert('パースワードもう一度入力してからボタンを押してください');
+			alert('パスワードもう一度入力してからボタンを押してください');
 			$('#pw1').val('');
 			$('#pw2').val('');
 			$('#pw1').focus();
 			return false;
 		} else if(name == ''||pw == ''){
-			alert('名前とパースワードを入力してください');
+			alert('名前とパスワードを入力してください');
 			$('#input_name').val('');
 			$('#pw1').val('');
 			$('#pw2').val('');
@@ -322,5 +325,5 @@ $(function(){
 		value_inp.style.cssText = 'position:absolute;right:0;width:128px;height:64px;';
 		$('#ebase6_popup_body').append(value_inp);
 	});
-
+	
 });
