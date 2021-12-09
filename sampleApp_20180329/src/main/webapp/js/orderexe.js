@@ -110,7 +110,7 @@ $(function() {
 			var tbodyElem = document.createElement("tbody");
 			table.appendChild(tbodyElem);
 			tbodyElem.setAttribute("id", "tbody_Po");
-			tbodyElem.style.cssText = "display:contents;position:absolute;height:350px;width:1030px;overflow-y:auto;overflow-x:hidden;";
+			tbodyElem.style.cssText = "display:block;position:absolute;height:350px;width:1030px;overflow-y:auto;overflow-x:hidden;";
 
 			//データのヒットがない場合、空行を作成
 			if (jres.tblData.length == 0) {
@@ -120,7 +120,7 @@ $(function() {
 					var tdElem = document.createElement("td");
 					trElem.appendChild(tdElem);
 					tdElem.style.background = "FC2604";
-					tdElem.style.cssText = 'height:16px;';
+					tdElem.style.cssText = 'height:16px;width:100px;';
 					tdElem.setAttribute('id', i+1);
 					if(i == 0){
 							tdElem.setAttribute("class","Idcol");
@@ -161,7 +161,7 @@ $(function() {
 
 			//背景色の高さはデータ量による
 			var x = table.tBodies[0].rows.length;
-			var hadjust = 32+28*x;
+			var hadjust = 32+30*x;
 			table.style.cssText = "position:absolute;width:1012px;height:"+hadjust+"px;max-height:380px;";
 			
 			
@@ -502,7 +502,7 @@ $(function() {
 		
 		//背景色の高さはデータ量による
 		var x = reposition.tBodies[0].rows.length;
-		var hadjust = 20+30*x;
+		var hadjust = 34+32*x;
 		reposition.style.cssText = "position:absolute;width:1051px;height:"+hadjust+"px;max-height:290px;overflow-y:auto;overflow-x:hidden;"
 
 		var matHead = document.createElement("div");
@@ -701,10 +701,10 @@ $(function() {
 						datainput.value = x;
 						datainput.setAttribute('type', 'number');
 						datainput.setAttribute('maxlength', '11');
+						datainput.setAttribute("oninput","javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);");
 						datainput.style.cssText = 'width:90%;color:blue;text-align:center;font-size:10pt;border:none;padding:3px;';
 						var input = 'input' + k + i;
 						datainput.setAttribute('id',input);
-						datainput.setAttribute("oninput","javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);");
 					} else if (delem % 10 == 8) {
 						var x = document.getElementById(delem).innerHTML;
 						var tdElem = document.createElement("td");
@@ -788,6 +788,10 @@ $(function() {
 					return false;
 				}
 				var delidate = document.getElementById(input_2).value;
+				if(delidate == ''){
+					alert("日付を入れてください");
+					return false;
+				}
 				var poremark = document.getElementById(input_3).innerHTML;
 				var id = document.getElementById(input_7).innerHTML;
 				
@@ -864,7 +868,7 @@ $(function() {
 							}
 
 						}
-
+						
 						//データ行を作成
 						var tbodyElem = document.createElement("tbody");
 						table.appendChild(tbodyElem);
@@ -914,7 +918,7 @@ $(function() {
 						}
 						//背景色の高さはデータ量による
 						var x = table.tBodies[0].rows.length;
-						var hadjust = 20+30*x;
+						var hadjust = 32+30*x;
 						table.style.cssText = "position:absolute;width:1012px;height:"+hadjust+"px;max-height:380px;";
 
 
@@ -1051,6 +1055,19 @@ $(function() {
 					tdElem.innerHTML = Math.ceil(ordqua);
 					tdElem.setAttribute('id', 'input' + k + 2);
 					tdElem.setAttribute('contenteditable', 'true');
+					tdElem.setAttribute('class','allownumeric');
+					$(".allownumeric").on("keypress keyup blur", function(event) {
+					  $(this).val($(this).val().replace(/[^\d].+/, ""));
+					  if ((event.which < 48 || event.which > 57)) {
+					    event.preventDefault();
+					  }
+					});
+					$('.allownumeric').on('keydown paste', function(event) { //Prevent on paste as well
+					  //You can add delete key event code as well over here for windows users.
+					  if($(this).html().length === 11 && event.keyCode != 8) { 
+					    event.preventDefault();
+					  }
+					});
 					tdElem.style.cssText = 'padding:8px;width:110px;border:1px black solid;box-sizing:border-box;';
 				var tdElem = document.createElement("td");
 					trElem.appendChild(tdElem);
@@ -1072,6 +1089,14 @@ $(function() {
 		var Date1 = new Date();
 		Date1.setDate(Date1.getDate() +1); 
 		var tmr = Date1.getFullYear()+'-'+(Date1.getMonth()+1)+'-'+Date1.getDate();
+		for(k=0;k<rowCountquickord;k++){
+			var getval2 = 'input' + k + 2;
+			var ord = document.getElementById(getval2).innerHTML; 
+			if(ord == ''){
+				alert('発注数を入力してください');
+				return false;
+			}
+		}
 		for(k=0;k<rowCountquickord;k++){
 			var getval1 = 'input' + k + 0;
 			var getval2 = 'input' + k + 2;

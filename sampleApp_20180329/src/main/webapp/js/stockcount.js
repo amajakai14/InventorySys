@@ -14,14 +14,6 @@ $(function(){
 		$('#tbody_stock').remove();
 		$('#userscreen').html('棚卸 | ');
 		var field = document.getElementById("datafield");
-		btnreturn = document.createElement('input');
-		field.appendChild(btnreturn);
-		btnreturn.setAttribute('type','button');
-		btnreturn.setAttribute('value','メインに戻る');
-		btnreturn.id = 'ebase6_mainReturnID';
-		btnreturn.style.cssText = "position:absolute;top:700px;left:600px;display:block;";
-		$('#ebase6_mainReturnID').off("click");
-		$('#ebase6_mainReturnID').on("click", mainReturn);
 		
 		var matHead = document.createElement("div");
 		matHead.id = "ebase6_matHead";
@@ -157,6 +149,8 @@ $(function(){
 			 tablecontentdetail.id = 'ebase6_tablecontentdetail';
 			field.appendChild( tablecontentdetail);
 			
+			
+			
 			var tabledetail = document.createElement("table");
 				tablecontentdetail.appendChild(tabledetail);
 				tabledetail.className = "tablesorter";
@@ -232,7 +226,7 @@ $(function(){
 				};
 				var x = tabledetail.tBodies[0].rows.length;
 				var hadjust = 34+34*x;
-				tabledetail.style.cssText = "position:absolute;width:616px;height:"+hadjust+"px;max-height:510px;";
+				tabledetail.style.cssText = "position:relative;width:616px;height:"+hadjust+"px;max-height:510px;";
 				
 				var spaceadjust = hadjust + 15;
 				if(spaceadjust > 515){
@@ -245,16 +239,22 @@ $(function(){
 				};
 				var space = document.createElement("div");
 				tablecontentdetail.appendChild(space);
-				space.style.cssText = "position:relative;top:"+spaceadjust2+"px;left:930px;padding:1px;";
+				space.style.cssText = "position:relative;top:30px;padding:1px;";
 				space.innerHTML = '';
+				space.setAttribute('id','space');
+				if(x < 6){
+					space.style.cssText = "position:relative;top:0px;padding:1px;";
+				}
+				var yhadjust = 30*x;
+				tbodyElem.style.cssText = 'display:block;height:'+yhadjust+'px;max-height:430px;position:absolute;overflow:auto;overflow-x:hidden;';
 				
 				//背景色の高さはデータ量による
 				var x = tabledetail.tBodies[0].rows.length;
 				if(x != 1){
-				var hadjust = 27+30*x;
-				tabledetail.style.cssText = "position:absolute;width:616px;height:"+hadjust+"px;max-height:460px;"
+				var hadjust = 32+28*x;
+				tabledetail.style.cssText = "position:relative;width:616px;height:"+hadjust+"px;max-height:460px;"
 				}else{
-					tabledetail.style.cssText = "position:absolute;width:616px;height:62px;"
+					tabledetail.style.cssText = "position:relative;width:616px;height:62px;"
 				};
 	
 				$("#tabledetail").tablesorter({
@@ -267,11 +267,27 @@ $(function(){
 				return false;
 			});
 		
+		var btnreturn = document.createElement('input');
+			tablecontentdetail.appendChild(btnreturn);
+			btnreturn.setAttribute('type','button');
+			btnreturn.setAttribute('value','メインに戻る');
+			btnreturn.id = 'ebase6_mainReturnID';
+			btnreturn.style.cssText = "position:relative;top:20px;left:600px;display:block;";
+			$('#ebase6_mainReturnID').off("click");
+			$('#ebase6_mainReturnID').on("click", mainReturn);
+		
 		clickdate = document.getElementById('inputdate').onchange = function(){
-			$('#tabledetail').remove();
-			$('#ebase6_tablecontentmain').remove();
-			$('#ebase6_tablecontentdetail').remove();
-			var dateselect = selectdate.value;
+		$('#tabledetail').remove();
+		$('#ebase6_tablecontentmain').remove();
+		$('#ebase6_tablecontentdetail').remove();
+		var dateselect = selectdate.value;
+		var today = new Date();
+		var date = today.getFullYear()+'-'+("0" + (today.getMonth() + 1)).slice(-2)+'-'+("0" + today.getDate()).slice(-2);
+		if(dateselect != date){
+			$('#button_sc').hide();
+		} else{
+			$('#button_sc').show();
+		}
 			
 		var tablecontentmain = document.createElement('div');
 		tablecontentmain.id = 'ebase6_tablecontentmain';
@@ -454,11 +470,12 @@ $(function(){
 				var x = tabledetail.tBodies[0].rows.length;
 				if(x != 1){
 				var hadjust = 27+30*x;
-				tabledetail.style.cssText = "position:absolute;width:616px;height:"+hadjust+"px;max-height:460px;";
+				tabledetail.style.cssText = "position:relative;width:616px;height:"+hadjust+"px;max-height:460px;";
 				}else{
-					tabledetail.style.cssText = "position:absolute;width:616px;height:62px;";
+					tabledetail.style.cssText = "position:relative;width:616px;height:62px;";
 				};
-				
+				var yhadjust = 30*x;
+				tbodyElem.style.cssText = 'display:block;height:'+yhadjust+'px;max-height:430px;position:absolute;overflow:auto;overflow-x:hidden;';
 				var spaceadjust = hadjust + 15;
 				if(spaceadjust > 515){
 					spaceadjust = 515;
@@ -470,8 +487,12 @@ $(function(){
 				};
 				var space = document.createElement("div");
 				tablecontentdetail.appendChild(space);
-				space.style.cssText = "position:relative;top:"+spaceadjust2+"px;left:930px;padding:1px;";
-				space.innerHTML = '';	
+				space.style.cssText = "position:relative;top:30px;padding:1px;";
+				space.innerHTML = '&nbsp';	
+				space.setAttribute('id','space');
+				if(x < 6){
+					space.style.cssText = "position:relative;top:0px;padding:1px;";
+				}
 					
 					
 				$("#dataTable").trigger("update");
@@ -490,6 +511,7 @@ $(function(){
 		$('#inputdate').remove();
 		$('#dataTableInv').remove();
 		$('#ebase6_mainReturnID').remove();
+		$('#tabledetail').remove();
 		
 		field = document.getElementById('datafield');
 		
@@ -517,7 +539,6 @@ $(function(){
 		btninsert.setAttribute('id', "button_InvCnf");
 		$('#button_InvCnf').off("click");
 		$('#button_InvCnf').on("click", StockInsert);
-		
 		var Daysalebox =document.createElement('div');
 		field.appendChild(Daysalebox);
 		Daysalebox.id = "Daysalebox";
@@ -534,7 +555,7 @@ $(function(){
 		Daysalevalue.setAttribute('type', 'number');
 		Daysalevalue.setAttribute("maxlength", "11");
 		Daysalevalue.setAttribute("oninput","javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);");
-		Daysalevalue.style.cssText = 'width:100px;box-sizing:border-box;';
+		Daysalevalue.style.cssText = 'width:100px;box-sizing:border-box;color:blue;';
 		Daysalevalue.onchange = function(){
 			CalDaysum();
 		};
@@ -736,12 +757,20 @@ $(function(){
 			if(jres.tblData.length==0){
 				var trElem = document.createElement("tr");
 				tbodyElem.appendChild(trElem);
-				for(i=0;i<jres.keys.length-2;i++){
+				for(i=0;i<19;i++){
 					var tdElem = document.createElement("td");
 					trElem.appendChild(tdElem);
-					tdElem.innerHTML = '0';
-					setid = 'table1' + j + '_' + i;
+					tdElem.style.cssText = 'height:26px;';
+					tdElem.innerHTML = "";
+					setid = 'tablea' + j + '_' + i;
 					tdElem.setAttribute('id',setid);
+					if(i>11){
+						tdElem.setAttribute("class","Idcol");
+					}
+					if(i == 6||i == 7||i == 8||i == 9){
+					setid = 'inputa' + j + '_' + i;
+					tdElem.setAttribute('id',setid);
+					}
 				}
 			}
 
@@ -788,8 +817,8 @@ $(function(){
 				};
 			};
 			var x = table1.tBodies[0].rows.length;
-			var hadjust = 34+34*x;
-			table1.style.cssText = "position:absolute;width:676px;height:"+hadjust+"px;max-height:510px;";
+			var hadjust = 32+34*x;
+			table1.style.cssText = "position:relative;width:676px;height:"+hadjust+"px;max-height:460px;";
 			
 			var spaceadjust = hadjust + 15;
 			if(spaceadjust > 515){
@@ -800,20 +829,24 @@ $(function(){
 			btnreturn.setAttribute('type', "button");
 			btnreturn.setAttribute('value', "戻る");
 			btnreturn.setAttribute('class', "ebase6_returnItemlist");
-			btnreturn.style.cssText = "position:relative;top:"+spaceadjust+"px;left:930px;";
+			btnreturn.style.cssText = "position:relative;left:930px;";
 			$('.ebase6_returnItemlist').off("click");
 			$('.ebase6_returnItemlist').on("click", firstpageStockCount);
 			
-			
-			var spaceadjust2 = spaceadjust + 5;
-			if(spaceadjust > 520){
-				spaceadjust = 520;
-			};
 			var space = document.createElement("div");
 			tablecontent.appendChild(space);
-			space.style.cssText = "position:relative;top:"+spaceadjust2+"px;left:930px;padding:1px;";
+			space.style.cssText = "position:relative;top:30px;padding:1px;";
 			space.innerHTML = '';
-			
+			space.setAttribute('id','space');
+			if(x < 6){
+				space.style.cssText = "position:relative;top:0px;padding:1px;";
+			}
+			var yhadjust = 34*x;
+			if(yhadjust <430){
+				tbodyElem.style.cssText = 'display:block;height:'+yhadjust+'px;max-height:430px;position:absolute;overflow:hidden;overflow-x:hidden;';
+			}else{
+				tbodyElem.style.cssText = 'display:block;height:'+yhadjust+'px;max-height:430px;position:absolute;overflow:auto;overflow-x:hidden;';
+			}
 			$("#dataTableInv").trigger("update");
 
 			$.ajaxSetup({ async: true }); //同期
@@ -950,9 +983,14 @@ $(function(){
 		$.ajaxSetup({ async: false }); //同期
 		FourWeeksGoods();
 		$.ajaxSetup({ async: true }); //同期の解除
-		CalGoodsNeed();
-		lastestInv();
-		GoodsInToday();
+		if($('#tablea0_1').html() != ''){
+			CalGoodsNeed();
+			lastestInv();
+			GoodsInToday();
+			$('#button_InvCnf').show();
+		} else{
+			$('#button_InvCnf').hide();
+		}
 		var tbodyRowCountT1 = table1.tBodies[0].rows.length;
 		for(i = 0; i < tbodyRowCountT1;i++){
 			var input1 = "inputa" + i + '_'+ 6;

@@ -98,6 +98,9 @@ $(function(){
 			field.appendChild(tablecontent);
 			tablecontent.id = "ebase6_tablecontentnewInspect";
 			//tablecontent.style.cssText = "position:absolute;left:calc(50% - 450px);";
+			
+			$('.ebase6_mainReturn').hide();
+			
 		
 		var table = document.createElement("table");
 			tablecontent.appendChild(table);
@@ -256,6 +259,9 @@ $(function(){
 							input.style.cssText = "width:100%;border:none;box-sizing:border-box;font-size:8pt;text-align:right;font-weight:bold;color:blue;";
 							if( i == 7|| i == 8){
 								input.setAttribute('type', "number");
+								input.setAttribute('type', 'number');
+								input.setAttribute('maxlength', '11');
+								input.setAttribute("oninput","javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);");
 							}
 						}
 
@@ -291,6 +297,16 @@ $(function(){
 				AutoCheckGoods();
 			}
 		}
+		
+		var btnr = document.createElement("input");
+			tablecontent.appendChild(btnr);
+			btnr.setAttribute('type', "button");
+			btnr.setAttribute('value', "メインに戻る");
+			//btnr.setAttribute('class', ".ebase6_mainReturn");
+			btnr.setAttribute('id', "mainreturn");
+			btnr.style.cssText = 'position:relative;display:inline;top:15px;left:80%;';
+			$('#mainreturn').off("click");
+			$('#mainreturn').on("click", mainReturn);
 		
 		//新規登録ボタン作成
 		var btns = document.createElement("input");
@@ -369,9 +385,8 @@ $(function(){
 	//検品データ登録
 	function checkRegister() {
 		
-		var table = document.getElementById("dataTable");
 		var rowCount = parseInt(document.getElementById('rowCount').innerHTML);
-		var tableCount = 0;
+		
 		for(j = 0; j < rowCount;j++){
 			//ID取得
 			var input_1 = j*10 + 3;
@@ -383,26 +398,36 @@ $(function(){
 			//値を取得
 			var id = document.getElementById(input_1).innerHTML;
 			var realcount = document.getElementById(input_2).value;
-			if (parseInt(realcount) == realcount) {
-			} else{
+			if (parseInt(realcount) != realcount) {
 				alert("検品数にデータを入力してください");
 				return false;
 			}
-			var badcount = document.getElementById(input_3).value;
-			var shortcount = document.getElementById(input_4).innerHTML;
-			var expdate = document.getElementById(input_5).innerHTML;
-			if(badcount == ""){
-				badcount = "0";
-			}
-			var checkremark = document.getElementById(input_6).value;
-			//submit処理開始
-			//$.ajaxSetup({ async: false }); //同期
-			$.postJSON("DQube",{actionID:'CheckRegister',id:id, realcount:realcount, badcount:badcount, shortcount:shortcount, expdate:expdate, checkremark:checkremark}, function(){
-				
-					$.checkexe();
-					return false;
-				
-			});
+		}
+		for(j = 0; j < rowCount;j++){
+			//ID取得
+			var input_1 = j*10 + 3;
+			var input_2 = 'input_' + j + 7;
+			var input_3 = 'input_' + j + 8;
+			var input_4 = 'input_' + j + 9;
+			var input_5 = 'input_' + j + 10;
+			var input_6 = 'input_' + j + 11;
+			//値を取得
+			var id = document.getElementById(input_1).innerHTML;
+			var realcount = document.getElementById(input_2).value;
+				var badcount = document.getElementById(input_3).value;
+				var shortcount = document.getElementById(input_4).innerHTML;
+				var expdate = document.getElementById(input_5).innerHTML;
+				if(badcount == ""){
+					badcount = "0";
+				}
+				var checkremark = document.getElementById(input_6).value;
+				//submit処理開始
+				//$.ajaxSetup({ async: false }); //同期
+				$.postJSON("DQube",{actionID:'CheckRegister',id:id, realcount:realcount, badcount:badcount, shortcount:shortcount, expdate:expdate, checkremark:checkremark}, function(){
+					
+						$.checkexe();
+						return false;
+				});
 		}
 		
 	}
@@ -553,6 +578,7 @@ $(function(){
 
 			});
 			
+			
 			var btnh = document.createElement("input");
 			tablecontent.appendChild(btnh);
 			btnh.setAttribute('type', "button");
@@ -594,10 +620,10 @@ $(function(){
 		
 		//背景色の高さはデータ量による
 		var x = reposition.tBodies[0].rows.length;
-		var hadjust = 20+30*x;
+		var hadjust = 32+32*x;
 		reposition.style.cssText = "position:absolute;width:1163px;height:"+hadjust+"px;max-height:290px;overflow-y:auto;overflow-x:hidden;"
 		
-		var hbodyadjust = 30*x-10;
+		var hbodyadjust = 32+32*x;
 		sizereduce.style.cssText = "display:block;position:absolute;width:1180px;height:"+hbodyadjust+"px;max-height:260px;overflow-y:auto;overflow-x:hidden;";
 
 		var matHead = document.createElement("div");
@@ -899,6 +925,10 @@ $(function(){
 			var shortcount = document.getElementById(input3).innerHTML;
 			var checkremark = document.getElementById(input4).value;
 			var id = document.getElementById(input_id).innerHTML;
+			if(realcount == ''|| badcount == ''){
+				alert('検品数と不良数を入力してください');
+				return false;
+			}
 				$.postJSON("DQube", { actionID: 'InspectUpdateData', realcount: realcount, badcount: badcount, shortcount: shortcount, checkremark: checkremark, id: id }, function(jres) {
 						//if (tableCount == 0) {
 							$('#dataTable').remove();
@@ -1284,5 +1314,11 @@ $(function(){
 			return false;
 		});
 	}
-
+	function mainReturn(){
+		$('#table_item').css('display', 'none');
+		$('#ebase6_NavButtonGroup').css('display', 'block');		
+		$('.ebase6_mainReturn').css('display', 'none');
+		$('#datafield').empty();
+		$('#userscreen').html('メイン | ');
+	}
 });

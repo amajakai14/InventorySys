@@ -3,6 +3,10 @@
  */
 $(function(){
 	$.inventorymanagement = function (){
+		firstpagemanagement();
+	}
+	
+	function firstpagemanagement(){
 		$('#datafield').empty();
 		$('#userscreen').html('在庫一覧 | ');
 		$('.ebase6_mainReturn').css('display', 'block');
@@ -35,7 +39,7 @@ $(function(){
 		tablecontent.appendChild(table);
 		table.className = "tablesorter";
 		table.id = "dataTableInvmng";
-		table.style.cssText = "position:absolute;width:788px;height:10px;";
+		table.style.cssText = "position:relative;width:788px;height:10px;";
 		
 		
 		var tmr = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()+1);
@@ -52,7 +56,7 @@ $(function(){
 			var btnh = document.createElement("input");
 			tablecontent.appendChild(btnh);
 			btnh.setAttribute('type', "button");
-			btnh.setAttribute('value', "新規発注へ")	;
+			btnh.setAttribute('value', "簡単発注へ")	;
 			btnh.setAttribute('id', "PoEdit");
 			btnh.style.cssText = 'font-size:.6em;padding:5px;background-color:#F5D98B;position:absolute;left:685px;top:-40px;cursor:pointer;width:100px;';
 			$('#PoEdit').off("click");
@@ -164,9 +168,22 @@ $(function(){
 			//背景色の高さはデータ量による
 			var x = table.tBodies[0].rows.length;
 			var hadjust = 30+30*x;
-			table.style.cssText = "position:absolute;width:788px;height:"+hadjust+"px;max-height:380px;";
+			table.style.cssText = "position:relative;width:788px;height:"+hadjust+"px;max-height:380px;";
 			
 			
+			var InvValpos = hadjust + 1;
+			if(InvValpos > 381){
+			InvValpos = 381;				
+			}
+			var InvValBox =  document.createElement("div");
+			field.appendChild(InvValBox);
+			InvValBox.setAttribute('id','InvValBox');
+			InvValBox.style.cssText = 'position:relative;top:'+ InvValpos+'px;background-color:#CDCDCD;width:225px;height:30px;';
+			var InvValText = document.createElement("div");
+			InvValBox.appendChild(InvValText);
+			InvValText.setAttribute('id','InvValText');
+			InvValText.style.cssText = "position:absolute;background-color:white;border:1px solid black;padding:5px;width:110px;box-sizing:border-box;font-size:.7em;text-align:center;";
+			$('#InvValText').html("資産総計");
 			
 			
 			$("#dataTableInvmng").tablesorter({
@@ -179,32 +196,26 @@ $(function(){
 			$.ajaxSetup({ async: true }); //同期の解除
 			return false;
 		});
-		var InvValBox =  document.createElement("div");
-		field.appendChild(InvValBox);
-		InvValBox.setAttribute('id','InvValBox');
-		var InvValText = document.createElement("div");
-		InvValBox.appendChild(InvValText);
-		InvValText.setAttribute('id','InvValText');
-		InvValText.style.cssText = "position:absolute;background-color:white;border:1px solid black;padding:5px;width:110px;box-sizing:border-box;font-size:.7em;text-align:center;";
-		$('#InvValText').html("資産総計");
 		
 		var AllInventValue = document.createElement('input');
 		InvValBox.appendChild(AllInventValue);
 		AllInventValue.setAttribute('id','allInvVal');
 		AllInventValue.setAttribute('value','0');
 		AllInventValue.setAttribute('readonly','true');
-		AllInventValue.style.cssText = 'position:relative;background-color;left:110px;white;border:1px solid black;padding:5px;width:110px;box-sizing:border-box;font-size:.7em;text-align:center;text-decoration-line: underline;text-decoration-style: double;text-underline-position:under;';
+		AllInventValue.style.cssText = 'position:relative;background-color;left:110px;white;border:1px solid black;padding:5px;width:110px;box-sizing:border-box;font-size:.7em;text-align:center;text-decoration-line: underline;text-decoration-style: double;text-underline-position:under;margin-left:2px;';
 		InventorySum();
 
 		clickdate = document.getElementById('inputdate').onchange = function(){
-			$('#ebase6_tablecontentInvmng').remove();
+			//$('#ebase6_tablecontentInvmng').remove();
 			$('#dataTableInvmng').remove();
 			$('#tbody_Invmng').remove();
 			$('#InvValBox').remove();
+			$('#PoEdit').hide();
 			var dateselect = selectdate.value;
-			var tablecontent = document.createElement("div");
-			tablecontent.id = "ebase6_tablecontentInvmng";
-			field.appendChild(tablecontent);
+			if(dateselect == date){
+				$('#PoEdit').show();
+			}
+			tablecontent = document.getElementById('ebase6_tablecontentInvmng');
 	
 			var table = document.createElement("table");
 			tablecontent.appendChild(table);
@@ -288,7 +299,16 @@ $(function(){
 						tdElem.innerHTML = jres.tblData[j][col];
 						tdElem.setAttribute('id', 'col' + j + i);
 						tdElem.style.cssText = 'padding:5px;width:110px;border:1px black solid;box-sizing:border-box;';
-						} 
+						} else if(i == 7){
+						var tdElem = document.createElement("td");
+						trElem.appendChild(tdElem);
+						tdElem.style.background = "#fff";
+						var col = jres.keys[i];
+						tdElem.innerHTML = jres.tblData[j][col];
+						tdElem.setAttribute('id', 'col' + j + i);
+						tdElem.setAttribute('class', 'Idcol');
+						tdElem.style.cssText = 'padding:5px;width:110px;border:1px black solid;box-sizing:border-box;';
+					}
 					}
 				}
 	
@@ -297,6 +317,19 @@ $(function(){
 				var hadjust = 30+30*x;
 				table.style.cssText = "position:absolute;width:788px;height:"+hadjust+"px;max-height:380px;";
 				
+				var InvValpos = hadjust + 1;
+				if(InvValpos > 381){
+				InvValpos = 381;				
+				}
+				var InvValBox =  document.createElement("div");
+				field.appendChild(InvValBox);
+				InvValBox.setAttribute('id','InvValBox');
+				InvValBox.style.cssText = 'position:relative;top:'+ InvValpos+'px;background-color:#CDCDCD;width:225px;height:30px;';
+				var InvValText = document.createElement("div");
+				InvValBox.appendChild(InvValText);
+				InvValText.setAttribute('id','InvValText');
+				InvValText.style.cssText = "position:absolute;background-color:white;border:1px solid black;padding:5px;width:110px;box-sizing:border-box;font-size:.7em;text-align:center;";
+				$('#InvValText').html("資産総計");
 				
 				$("#dataTableInvmng").tablesorter({
 					widgets: ['zebra'],
@@ -308,21 +341,13 @@ $(function(){
 				$.ajaxSetup({ async: true }); //同期の解除
 				return false;
 			});
-			var InvValBox =  document.createElement("div");
-			field.appendChild(InvValBox);
-			InvValBox.setAttribute('id','InvValBox');
-			var InvValText = document.createElement("div");
-			InvValBox.appendChild(InvValText);
-			InvValText.setAttribute('id','InvValText');
-			InvValText.style.cssText = "position:absolute;background-color:white;border:1px solid black;padding:5px;width:110px;box-sizing:border-box;font-size:.7em;text-align:center;";
-			$('#InvValText').html("資産総計");
 			
 			var AllInventValue = document.createElement('input');
 			InvValBox.appendChild(AllInventValue);
 			AllInventValue.setAttribute('id','allInvVal');
 			AllInventValue.setAttribute('value','0');
 			AllInventValue.setAttribute('readonly','true');
-			AllInventValue.style.cssText = 'position:relative;background-color;left:110px;white;border:1px solid black;padding:5px;width:110px;box-sizing:border-box;font-size:.7em;text-align:center;text-decoration-line: underline;text-decoration-style: double;text-underline-position:under;';
+			AllInventValue.style.cssText = 'position:relative;background-color;left:110px;white;border:1px solid black;padding:5px;width:110px;box-sizing:border-box;font-size:.7em;text-align:center;text-decoration-line: underline;text-decoration-style: double;text-underline-position:under;margin-left:2px;';
 			InventorySum();
 		}
 		

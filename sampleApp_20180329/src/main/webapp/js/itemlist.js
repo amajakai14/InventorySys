@@ -354,7 +354,7 @@ $(function() {
 		
 		//背景色の高さはデータ量による
 		var x = reposition.tBodies[0].rows.length;
-		var hadjust = 20+30*x;
+		var hadjust = 34+32*x;
 		reposition.style.cssText = "position:absolute;width:715px;height:"+hadjust+"px;max-height:230px;";
 
 		var matHead = document.createElement("div");
@@ -386,9 +386,6 @@ $(function() {
 		btnad.style.cssText = 'position:relative;;background-color:	#C0C0C0;cursor:pointer;';
 		$('#button_ad').off("click");
 		$('#button_ad').on("click", addcorrectdata);
-
-
-
 		
 		//チェックボックスを表示する
 		var checkboxcol = document.getElementById("checkboxcol");
@@ -418,63 +415,70 @@ $(function() {
 		var tbodyRowCount = reposition.tBodies[0].rows.length;
 
 		$('#ebase6_listCreateTable').remove();
-		var listCreateTable = document.createElement("div");
-		listCreateTable.id = "ebase6_listCreateTable";
-		listCreateTable.style.cssText = 'top:250px;';
-		tablecontent.appendChild(listCreateTable);
 		
+		for (j = 0;j < tbodyRowCount; j++) {
+			var rcheck = "chbox" + j;
+			var x = document.getElementById(rcheck).checked;
+			if(x == true){
+				var listCreateTable = document.createElement("div");
+				listCreateTable.id = "ebase6_listCreateTable";
+				listCreateTable.style.cssText = 'top:250px;';
+				tablecontent.appendChild(listCreateTable);
 				
-		tableit = document.createElement('table');
-		listCreateTable.appendChild(tableit);
-		tableit.id = "tableit";
-		tableit.className = "tablesorter";
-		tableit.style.cssText = 'border-collapse:collapse;';
+						
+				tableit = document.createElement('table');
+				listCreateTable.appendChild(tableit);
+				tableit.id = "tableit";
+				tableit.className = "tablesorter";
+				tableit.style.cssText = 'border-collapse:collapse;';
+				
+				var theadElemit = document.createElement("thead"); 
+				var trElemit = document.createElement("tr");
+				tableit.appendChild(theadElemit);
+				theadElemit.appendChild(trElemit);
+				
+				var view7 = document.createElement("th");
+				tableit.appendChild(view7);
+				view7.innerHTML = "食材ID";
+				view7.id = "view7_sample";
+				view7.style.cssText = 'display:none;';
 		
-		var theadElemit = document.createElement("thead"); 
-		var trElemit = document.createElement("tr");
-		tableit.appendChild(theadElemit);
-		theadElemit.appendChild(trElemit);
+				var view1 = document.createElement("th");
+				tableit.appendChild(view1);
+				view1.innerHTML = "食材名";
+				view1.id = "view1_sample";
 		
-		var view7 = document.createElement("th");
-		tableit.appendChild(view7);
-		view7.innerHTML = "食材ID";
-		view7.id = "view7_sample";
-		view7.style.cssText = 'display:none;';
-
-		var view1 = document.createElement("th");
-		tableit.appendChild(view1);
-		view1.innerHTML = "食材名";
-		view1.id = "view1_sample";
-
-		var view2 = document.createElement("th");
-		tableit.appendChild(view2);
-		view2.innerHTML = "単位";
-		view2.id = "view2_sample";
-
-		var view3 = document.createElement("th");
-		tableit.appendChild(view3);
-		view3.innerHTML = "単価";
-		view3.id = "view3_sample";
-
-		var view4 = document.createElement("th");
-		tableit.appendChild(view4);
-		view4.innerHTML = "消費期間";
-		view4.id = "view4_sample";
-
-		var view5 = document.createElement("th");
-		tableit.appendChild(view5);
-		view5.innerHTML = "仕入れ店";
-		view5.id = "view5_sample";
-
-		var view6 = document.createElement("th");
-		tableit.appendChild(view6);
-		view6.innerHTML = "食材備考";
-		view6.id = "view6_sample";
+				var view2 = document.createElement("th");
+				tableit.appendChild(view2);
+				view2.innerHTML = "単位";
+				view2.id = "view2_sample";
 		
+				var view3 = document.createElement("th");
+				tableit.appendChild(view3);
+				view3.innerHTML = "単価";
+				view3.id = "view3_sample";
 		
-		var tbodyElemit = document.createElement('tbody');
-		tableit.appendChild(tbodyElemit);
-		tbodyElemit.setAttribute("id", "tbody_editIt");
+				var view4 = document.createElement("th");
+				tableit.appendChild(view4);
+				view4.innerHTML = "消費期間";
+				view4.id = "view4_sample";
+		
+				var view5 = document.createElement("th");
+				tableit.appendChild(view5);
+				view5.innerHTML = "仕入れ店";
+				view5.id = "view5_sample";
+		
+				var view6 = document.createElement("th");
+				tableit.appendChild(view6);
+				view6.innerHTML = "食材備考";
+				view6.id = "view6_sample";
+				
+				var tbodyElemit = document.createElement('tbody');
+				tableit.appendChild(tbodyElemit);
+				tbodyElemit.setAttribute("id", "tbody_editIt");
+				break;
+			}
+		}
 
 
 		var k = 0;
@@ -580,27 +584,40 @@ $(function() {
 					} 
 				}
 				k +=1;
+				$('#button_cc').remove();
+				var btn = document.createElement("input");
+				listCreateTable.appendChild(btn);
+				btn.setAttribute('type', "button");
+				btn.setAttribute('value', "修正確定");
+				btn.setAttribute('id', "button_cc");
+				btn.style.cssText = 'position:relative;top:10px;background-color:#FF9B9B;cursor:pointer;';
+				$('#button_cc').off("click");
+				$('#button_cc').on("click", updatedata);
 			}
 
 		}
-		var btn = document.createElement("input");
-		listCreateTable.appendChild(btn);
-		btn.setAttribute('type', "button");
-		btn.setAttribute('value', "修正確定");
-		btn.setAttribute('id', "button_cc");
-		btn.style.cssText = 'position:relative;top:10px;background-color:#FF9B9B;cursor:pointer;';
-		$('#button_cc').off("click");
-		$('#button_cc').on("click", updatedata);
-		
-		var btnreturn = document.createElement("input");
-		listCreateTable.appendChild(btnreturn);
-		btnreturn.setAttribute('type', "button");
-		btnreturn.setAttribute('value', "戻る");
-		btnreturn.setAttribute('class', "ebase6_returnItemlist");
-		btnreturn.setAttribute('id', "button_rt");
-		btnreturn.style.cssText = "left:75%;";	
-		$('#button_rt').off("click");
-		$('#button_rt').on("click", firstpageItem);
+		try{
+			var btnreturn = document.createElement("input");
+			listCreateTable.appendChild(btnreturn);
+			btnreturn.setAttribute('type', "button");
+			btnreturn.setAttribute('value', "戻る");
+			btnreturn.setAttribute('class', "ebase6_returnItemlist");
+			btnreturn.setAttribute('id', "button_rt");
+			btnreturn.style.cssText = "left:75%;";	
+			$('#button_rt').off("click");
+			$('#button_rt').on("click", firstpageItem);
+		}catch(err){
+			field = document.getElementById('datafield');
+			var btnreturn = document.createElement("input");
+			field.appendChild(btnreturn);
+			btnreturn.setAttribute('type', "button");
+			btnreturn.setAttribute('value', "戻る");
+			btnreturn.setAttribute('class', "ebase6_returnItemlist");
+			btnreturn.setAttribute('id', "button_rt");
+			btnreturn.style.cssText = "top:250px;left:80%;";	
+			$('#button_rt').off("click");
+			$('#button_rt').on("click", firstpageItem);
+		}
 	}
 
 	//品物データの登録処理
@@ -630,16 +647,9 @@ $(function() {
 		table.className = "tablesorter";
 		table.id = "dataTable";
 		table.style.cssText = 'position:absolute;top:80px;width:880px;margin:5px 5px 5px 5px;';
-		if (name == '') {
-			alert("食材名を入力してください");
-		}else if(unit == ''){
-			alert("単位を入力してください");
-		}else if(cost ==''){
-			alert("単価を入力してください");
-		}else if(expperiod ==''){
-			alert("日数を入力してください");
-		}else if(supp == ''){
-			alert("仕入れ店を入力してください");
+		if(/^\s*$/.test(name)||/^\s*$/.test(unit)||/^\s*$/.test(cost)||/^\s*$/.test(expperiod)||/^\s*$/.test(supp)){
+			alert('必須項目に入力してください');
+			return false;
 		}else {
 
 			//submit処理開始
@@ -653,7 +663,7 @@ $(function() {
 		}
 	}
 
-
+	
 
 	//品物データの修正処理
 	function updatedata() {
@@ -678,6 +688,11 @@ $(function() {
 					var supp = document.getElementById(input_6).value;
 					var caution = document.getElementById(input_7).value;
 					var id = document.getElementById(input_1).innerHTML;
+					//BlankSpace発見
+					if(/^\s*$/.test(name)||/^\s*$/.test(unit)||/^\s*$/.test(cost)||/^\s*$/.test(expperiod)||/^\s*$/.test(supp)){
+						alert('必須項目に入力してください');
+						return false;
+					}
 					
 					var tablecontent = document.getElementById("ebase6_tablecontent");
 					tablecontent.style.cssText = "position:absolute;top:90px;left:calc(50% - 338px);"

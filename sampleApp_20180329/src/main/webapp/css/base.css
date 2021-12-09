@@ -423,7 +423,7 @@ table td th {
 	background-color: white;
 }
 /* メインに戻るボタン */
-.ebase6_mainReturn{
+.ebase6_mainReturn,  #mainreturn{
 	background-color : #f1b51d;
 	color : #000000;
 	text-align : center;
@@ -688,7 +688,7 @@ input[type=number] {
   #ebase6_tablecontent, #ebase6_tablecontentOrd,  #ebase6_tablecontentnewInspect{position:absolute;left:30px;} 
   #ebase6_tablecontentInv {position:absolute;top:230px;left:30px;}  
   #ebase6_tablecontentInvmng {position:absolute;left:calc(50% - 394px);}
-  #InvValBox {position:absolute;top:480px;left:calc(50% - 45px);}
+  #InvValBox {position:absolute;top:480px;left:calc(50% - 49px);}
   #ebase6_tablecontentmng{position:absolute;left:calc(50% - 300px);top:135px}
   #Daysalebox{position:absolute;top:80px;left:75%;width:150px;}
   #button_InvCnf{position:absolute;top:165px;left:950px;background-color:#59B7EA;cursor:pointer;}
@@ -704,7 +704,7 @@ input[type=number] {
   #ebase6_tablecontentnewInspect{position:absolute;left:calc(50% - 450px);}
   #ebase6_tablecontentOrd {position:absolute;left:calc(50% - 563px);}
   #ebase6_tablecontentInvmng {position:absolute;left:calc(50% - 394px);}
-  #InvValBox {position:absolute;top:480px;left:calc(50% - 45px);}
+  #InvValBox {position:absolute;top:480px;left:calc(50% - 49px);}
   #ebase6_tablecontentInv {position:absolute;top:230px;left:calc(50% - 499px);}
   #ebase6_tablecontentmng{position:absolute;left:calc(50% - 300px);top:135px} 
   #Daysalebox{position:absolute;top:80px;left:75%;width:150px;}
